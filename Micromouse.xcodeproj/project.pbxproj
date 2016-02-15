@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		C913702C1C729AE200659AA1 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = C913702B1C729AE200659AA1 /* main.c */; };
+		C91370341C729B0300659AA1 /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = C91370321C729B0300659AA1 /* Utility.c */; };
+		C91370371C729B0C00659AA1 /* map.c in Sources */ = {isa = PBXBuildFile; fileRef = C91370351C729B0C00659AA1 /* map.c */; };
+		C913703A1C729B1600659AA1 /* path.c in Sources */ = {isa = PBXBuildFile; fileRef = C91370381C729B1600659AA1 /* path.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +28,12 @@
 /* Begin PBXFileReference section */
 		C91370281C729AE200659AA1 /* Micromouse */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Micromouse; sourceTree = BUILT_PRODUCTS_DIR; };
 		C913702B1C729AE200659AA1 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		C91370321C729B0300659AA1 /* Utility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Utility.c; sourceTree = "<group>"; };
+		C91370331C729B0300659AA1 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
+		C91370351C729B0C00659AA1 /* map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = map.c; sourceTree = "<group>"; };
+		C91370361C729B0C00659AA1 /* map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = map.h; sourceTree = "<group>"; };
+		C91370381C729B1600659AA1 /* path.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = path.c; sourceTree = "<group>"; };
+		C91370391C729B1600659AA1 /* path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = path.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +67,12 @@
 			isa = PBXGroup;
 			children = (
 				C913702B1C729AE200659AA1 /* main.c */,
+				C91370381C729B1600659AA1 /* path.c */,
+				C91370391C729B1600659AA1 /* path.h */,
+				C91370321C729B0300659AA1 /* Utility.c */,
+				C91370331C729B0300659AA1 /* Utility.h */,
+				C91370351C729B0C00659AA1 /* map.c */,
+				C91370361C729B0C00659AA1 /* map.h */,
 			);
 			path = Micromouse;
 			sourceTree = "<group>";
@@ -118,6 +133,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C913703A1C729B1600659AA1 /* path.c in Sources */,
+				C91370371C729B0C00659AA1 /* map.c in Sources */,
+				C91370341C729B0300659AA1 /* Utility.c in Sources */,
 				C913702C1C729AE200659AA1 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
