@@ -19,6 +19,7 @@ void map(struct loc *position, struct node param[18][18]) {
     for (int i = 0; i < 4; i++) {
         moveRobot(position, options[i]);
         map(position, param);
+        // GO BACK
     }
 }
 
