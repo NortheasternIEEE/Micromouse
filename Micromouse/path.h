@@ -11,7 +11,14 @@
 
 #include <stdio.h>
 #include "Utility.h"
+#include "linkedlist.h"
+#include "map.h"
 
-void findPath(struct node graph[18][18], struct loc *start, struct loc end);
+void findPath(struct node graph[18][18], struct loc *start,
+              struct loc end, Link *currPath, Link *bestPath);
+
+void dealWithPath(Link *curr, Link *best);
+void updateLoc(struct loc *pos, enum directions d);
+void goBack(struct loc *pos, enum directions d);
 
 #endif /* path_h */

@@ -20,5 +20,7 @@ typedef struct lNode {
 
 void pushToEnd(Link *head, enum directions value);
 void pushToHead(Link **head, enum directions value);
+void popFromEnd(Link *head);
+
 
 #endif /* linkedlist_h */
