@@ -25,7 +25,7 @@ void findPath(struct node graph[18][18], struct loc *start, struct loc end, Link
 }
 
 void dealWithPath(Link *curr, Link *best) {
-    
+    // DO SOME SHIT
 }
 
 void updateLoc(struct loc *p, enum directions d) {
