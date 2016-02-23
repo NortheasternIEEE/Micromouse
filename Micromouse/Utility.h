@@ -11,32 +11,34 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#define mazeSize 16
 
 
-struct node {
+typedef enum directions {RIGHT, LEFT, UP, DOWN, STOP} direction;
+
+typedef struct node {
     bool right;
     bool left;
     bool up;
     bool down;
     bool maped;
-};
+    direction parent;
+} node;
 
-struct loc {
+typedef struct loc {
     int x;
     int y;
-};
-
-enum directions {RIGHT, LEFT, UP, DOWN, STOP};
+} location;
 
 
-void moveRobot(struct loc *p, enum directions d);
-void setLoc(struct loc *spot, int x, int y);
-enum directions goRight(struct node v);
-enum directions goLeft(struct node v);
-enum directions goUp(struct node v);
-enum directions goDown(struct node v);
-void initializeGraph(struct node param[18][18], int size);
-void initializeLoc(struct loc *spot);
+void moveRobot(location *p, direction d);
+void setLoc(location *spot, int x, int y);
+direction goRight(node v);
+direction goLeft(node v);
+direction goUp(node v);
+direction goDown(node v);
+void initializeGraph(node param[mazeSize][mazeSize], int size);
+void initializeLoc(location *spot);
 
 
 #endif /* Utility_h */

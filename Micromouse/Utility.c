@@ -9,7 +9,7 @@
 #include "Utility.h"
 
 
-void moveRobot(struct loc *p, enum directions d) {
+void moveRobot(location *p, direction d) {
     switch (d) {
         case RIGHT:
             // MOVE RIGHT
@@ -35,17 +35,17 @@ void moveRobot(struct loc *p, enum directions d) {
     }
 }
 
-void initializeLoc(struct loc *spot) {
+void initializeLoc(location *spot) {
     spot->x = 0;
     spot->y = 0;
 }
 
-void  setLoc(struct loc *spot, int x, int y) {
+void  setLoc(location *spot, int x, int y) {
     spot->x = x;
     spot->y = y;
 }
 
-void initializeGraph(struct node param[18][18], int size) {
+void initializeGraph(node param[mazeSize][mazeSize], int size) {
     for (int i = 0; i < size; i ++) {
         for (int j = 0; j < size; j++) {
             if (i == 0) {
@@ -69,32 +69,33 @@ void initializeGraph(struct node param[18][18], int size) {
                 param[i][j].right = true;
             }
             param[i][j].maped = false;
+            param[i][j].parent = STOP;
         }
     }
 }
 
-enum directions goRight(struct node v) {
+direction goRight(node v) {
     if (v.right) {
         return RIGHT;
     } else {
         return STOP;
     }
 }
-enum directions goLeft(struct node v) {
+direction goLeft(node v) {
     if (v.left) {
         return LEFT;
     } else {
         return STOP;
     }
 }
-enum directions goUp(struct node v) {
+direction goUp(node v) {
     if (v.up) {
         return UP;
     } else {
         return STOP;
     }
 }
-enum directions goDown(struct node v) {
+direction goDown(node v) {
     if (v.down) {
         return DOWN;
     } else {

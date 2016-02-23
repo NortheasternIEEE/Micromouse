@@ -9,11 +9,11 @@
 #include "map.h"
 
 
-void map(struct loc *position, struct node param[18][18]) {
+void map(location *position, node param[mazeSize][mazeSize]) {
     int x = position->x;
     int y = position->y;
     if (param[x][y].maped) {return;}
-    enum directions options[4];
+    direction options[4];
     visit(&param[x][y]);
     getSuccessors(param[x][y], options);
     for (int i = 0; i < 4; i++) {
@@ -23,11 +23,11 @@ void map(struct loc *position, struct node param[18][18]) {
     }
 }
 
-void visit(struct node *n) {
+void visit(node *n) {
     n->maped = true;
 }
 
-void getSuccessors(struct node v, enum directions array[4]) {
+void getSuccessors(node v, direction array[4]) {
     array[0] = goRight(v);
     array[1] = goLeft(v);
     array[2] = goUp(v);

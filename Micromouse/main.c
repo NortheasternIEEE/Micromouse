@@ -16,7 +16,7 @@
 
 
 int main(int argc, const char * argv[]) {
-    struct node graph[18][18];
+    struct node graph[mazeSize][mazeSize];
     struct loc currentPoint;
     enum directions ways[4];
     int size = NELEMS(graph);

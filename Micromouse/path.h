@@ -14,11 +14,11 @@
 #include "linkedlist.h"
 #include "map.h"
 
-void findPath(struct node graph[18][18], struct loc *start,
-              struct loc end, Link *currPath, Link *bestPath);
+void findPath(node graph[mazeSize][mazeSize], location *start,
+               location end, Link *currPath, Link *bestPath);
 
 void dealWithPath(Link *curr, Link *best);
-void updateLoc(struct loc *pos, enum directions d);
-void goBack(struct loc *pos, enum directions d);
+void updateLoc(location *pos, direction d);
+void goBack(location *pos, direction d);
 
 #endif /* path_h */

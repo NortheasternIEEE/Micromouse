@@ -13,8 +13,8 @@
 #include "Utility.h"
 
 
-void getSuccessors(struct node v, enum directions array[4]);
-void map(struct loc *position, struct node param[18][18]);
-void visit(struct node *n);
+void getSuccessors(node v, direction array[4]);
+void map(location *position, node param[mazeSize][mazeSize]);
+void visit(node *n);
 
 #endif /* map_h */

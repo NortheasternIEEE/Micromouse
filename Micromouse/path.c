@@ -9,11 +9,11 @@
 #include "path.h"
 
 
-void findPath(struct node graph[18][18], struct loc *start, struct loc end, Link *currentPath, Link *bestPath) {
+void findPath(node graph[mazeSize][mazeSize], location *start, location end, Link *currentPath, Link *bestPath) {
     if ((start->x == end.x) && (start->y == end.y)) {
         dealWithPath(currentPath, bestPath);
     }
-    enum directions options[4];
+    direction options[4];
     getSuccessors(graph[start->x][start->y], options);
     for (int i = 0; i < 4; i++) {
         updateLoc(start, options[i]);
@@ -28,7 +28,7 @@ void dealWithPath(Link *curr, Link *best) {
     // DO SOME SHIT
 }
 
-void updateLoc(struct loc *p, enum directions d) {
+void updateLoc(location *p, direction d) {
     switch (d) {
         case RIGHT:
             p->x = p->x + 1;
@@ -49,7 +49,7 @@ void updateLoc(struct loc *p, enum directions d) {
     }
 }
 
-void goBack(struct loc *p, enum directions d) {
+void goBack(location *p, direction d) {
     switch (d) {
         case RIGHT:
             updateLoc(p, LEFT);
