@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "Utility.h"
+#include <stdlib.h>
 
 typedef struct lNode {
     enum directions value;
@@ -22,7 +23,7 @@ struct List
 	struct lNode *head;
 	struct lNode *current;
 	struct lNode *previous;
-}
+};
 
 void pushToEnd(struct List *list, Link *lNode1);
 void pushToHead(struct List *list, Link *lNode1);
