@@ -12,19 +12,23 @@
 void moveRobot(location *p, direction d) {
     switch (d) {
         case RIGHT:
-            // MOVE RIGHT
+            // MOVE THE MOUSE RIGHT
+            // UPDATE ITS POSITION
             p->x = p->x + 1;
             break;
         case LEFT:
-            // MOVE LEFT
+            // MOVE THE MOUSE LEFT
+            // UPDATE ITS POSITION
             p->x = p->x - 1;
             break;
         case DOWN:
-            // MOVE DOWN
+            // MOVE THE MOUSE DOWN
+            // UPDATE ITS POSITION
             p->y = p->y - 1;
             break;
         case UP:
-            // MOVE UP
+            // MOVE THE MOUSE UP
+            // UPDATE ITS POSITION
             p->y = p->y + 1;
             break;
         case STOP:
@@ -49,21 +53,25 @@ void initializeGraph(node param[mazeSize][mazeSize]) {
     for (int i = 0; i < mazeSize; i ++) {
         for (int j = 0; j < mazeSize; j++) {
             if (i == 0) {
+                // IF i == 0 then you are on the left edge of the maze so the mouse can not move left
                 param[i][j].left = false;
             } else {
                 param[i][j].left = true;
             }
             if (i == mazeSize - 1){
+                // if i == mazeSize - 1 you are on the right edge so the mouse can not move right
                 param[i][j].right = false;
             } else {
                 param[i][j].right = true;
             }
             if (j == 0) {
+                // If j == 0 then you are on the bottom edge so the mouse can not move down
                 param[i][j].down = false;
             } else {
                 param[i][j].down = true;
             }
             if (j == mazeSize -1) {
+                // if j == mazeSize - 1 then you are on the top edge so the mouse can not move up
                 param[i][j].up = false;
             } else {
                 param[i][j].up = true;

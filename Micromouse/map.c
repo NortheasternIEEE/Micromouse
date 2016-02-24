@@ -12,14 +12,19 @@
 void map(location *position, node param[mazeSize][mazeSize]) {
     int x = position->x;
     int y = position->y;
+    // If you have already been to this node return
     if (param[x][y].maped) {return;}
     direction options[4];
+    // Visit the node to get all the relevant information you need
     visit(&param[x][y]);
+    // Get all the possible ways the mouse can move from this cell
     getSuccessors(param[x][y], options);
     for (int i = 0; i < 4; i++) {
+        // Move the mouse that direction and update its location
         moveRobot(position, options[i]);
+        // Map the maze starting from that new location
         map(position, param);
-        // GO BACK
+        // GO BACK - Not implemented yet
     }
 }
 

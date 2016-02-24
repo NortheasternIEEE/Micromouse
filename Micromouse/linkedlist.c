@@ -77,7 +77,7 @@ void ListRemove(struct List*list)
 void pushToHead(struct List *list, Link *lNode1)
 {
 	ListHead(list);
-	ListInsert(&list, lNode1);
+	ListInsert(list, lNode1);
 }
 
 void popFromEnd(struct List *list)
