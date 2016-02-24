@@ -11,7 +11,22 @@
 
 #include <stdio.h>
 #include "Utility.h"
+#include "linkedlist.h"
+#include "map.h"
 
-void findPath(struct node graph[18][18], struct loc *start, struct loc end);
+void findPath(node graph[mazeSize][mazeSize], location *start,
+               location end, Link *bestPath);
+
+void dealWithPath(node graph[mazeSize][mazeSize], location *start, Link *best);
+void updateLoc(location *pos, direction d);
+void goBack(location *pos, direction d);
+/*
+ * Given a direction returns its opposite value. For example the opposite of RIGHT is LEFT
+ */
+direction reverse(direction d);
+/*
+ * Print the given directions
+ */
+void printD(direction d);
 
 #endif /* path_h */
