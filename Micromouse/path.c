@@ -9,23 +9,59 @@
 #include "path.h"
 
 
-void findPath(node graph[mazeSize][mazeSize], location *start, location end, Link *currentPath, Link *bestPath) {
-    if ((start->x == end.x) && (start->y == end.y)) {
-        dealWithPath(currentPath, bestPath);
+void findPath(node graph[mazeSize][mazeSize], location *start, location end, Link *bestPath) {
+    if (graph[start->x][start->y].maped == true) {
+        return;
     }
+    if ((start->x == end.x) && (start->y == end.y)) {
+        dealWithPath(graph, start, bestPath);
+        return;
+    }
+    graph[start->x][start->y].maped = true;
+    printf("Location: x = %d ", start->x);
+    printf("y = %d\n", start->y);
     direction options[4];
     getSuccessors(graph[start->x][start->y], options);
+    direction d = graph[start->x][start->y].parent;
+    d = reverse(d);
     for (int i = 0; i < 4; i++) {
-        updateLoc(start, options[i]);
-        pushToEnd(currentPath, options[i]);
-        findPath(graph, start, end, currentPath, bestPath);
-        popFromEnd(currentPath);
-        goBack(start, options[i]);
+        if (options[i] != STOP && options[i] != d) {
+            updateLoc(start, options[i]);
+            graph[start->x][start->y].parent = options[i];
+            //pushToEnd(currentPath, options[i]);
+            findPath(graph, start, end, bestPath);
+            //popFromEnd(currentPath);
+            goBack(start, options[i]);
+        }
     }
 }
 
-void dealWithPath(Link *curr, Link *best) {
+direction reverse(direction d) {
+    switch (d) {
+        case RIGHT:
+            return LEFT;
+            break;
+        case LEFT:
+            return RIGHT;
+            break;
+        case DOWN:
+            return UP;
+            break;
+        case UP:
+            return DOWN;
+            break;
+        case STOP:
+            return STOP;
+            break;
+        default:
+            return STOP;
+            break;
+    }
+}
+
+void dealWithPath(node graph[mazeSize][mazeSize], location *start, Link *best) {
     // DO SOME SHIT
+    printf("Made it to the end");
 }
 
 void updateLoc(location *p, direction d) {
@@ -66,4 +102,7 @@ void goBack(location *p, direction d) {
         default:
             break;
     }
+    
+    printf("Go Back: x = %d ", p->x);
+    printf("y = %d\n", p->y);
 }

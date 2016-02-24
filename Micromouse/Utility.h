@@ -37,7 +37,7 @@ direction goRight(node v);
 direction goLeft(node v);
 direction goUp(node v);
 direction goDown(node v);
-void initializeGraph(node param[mazeSize][mazeSize], int size);
+void initializeGraph(node param[mazeSize][mazeSize]);
 void initializeLoc(location *spot);
 
 

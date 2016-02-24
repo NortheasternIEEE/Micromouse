@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include "Utility.h"
 #include "map.h"
+#include "path.h"
 
 #define NELEMS(x) (sizeof(x)/sizeof(x[0]))
 
@@ -18,10 +19,15 @@
 int main(int argc, const char * argv[]) {
     struct node graph[mazeSize][mazeSize];
     struct loc currentPoint;
+    location end;
+    end.x = 8;
+    end.y = 8;
+    Link bestPath;
     enum directions ways[4];
     int size = NELEMS(graph);
-    initializeGraph(graph, size);
+    initializeGraph(graph);
     initializeLoc(&currentPoint);
+    findPath(graph, &currentPoint, end, &bestPath);
     return 0;
 }
 

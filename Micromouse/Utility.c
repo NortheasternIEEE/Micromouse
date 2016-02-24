@@ -45,28 +45,28 @@ void  setLoc(location *spot, int x, int y) {
     spot->y = y;
 }
 
-void initializeGraph(node param[mazeSize][mazeSize], int size) {
-    for (int i = 0; i < size; i ++) {
-        for (int j = 0; j < size; j++) {
+void initializeGraph(node param[mazeSize][mazeSize]) {
+    for (int i = 0; i < mazeSize; i ++) {
+        for (int j = 0; j < mazeSize; j++) {
             if (i == 0) {
-                param[i][j].down = false;
-            } else {
-                param[i][j].down = true;
-            }
-            if (i == size - 1){
-                param[i][j].up = false;
-            } else {
-                param[i][j].up = true;
-            }
-            if (j == 0) {
                 param[i][j].left = false;
             } else {
                 param[i][j].left = true;
             }
-            if (j == size -1) {
+            if (i == mazeSize - 1){
                 param[i][j].right = false;
             } else {
                 param[i][j].right = true;
+            }
+            if (j == 0) {
+                param[i][j].down = false;
+            } else {
+                param[i][j].down = true;
+            }
+            if (j == mazeSize -1) {
+                param[i][j].up = false;
+            } else {
+                param[i][j].up = true;
             }
             param[i][j].maped = false;
             param[i][j].parent = STOP;

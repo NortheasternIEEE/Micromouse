@@ -15,10 +15,11 @@
 #include "map.h"
 
 void findPath(node graph[mazeSize][mazeSize], location *start,
-               location end, Link *currPath, Link *bestPath);
+               location end, Link *bestPath);
 
-void dealWithPath(Link *curr, Link *best);
+void dealWithPath(node graph[mazeSize][mazeSize], location *start, Link *best);
 void updateLoc(location *pos, direction d);
 void goBack(location *pos, direction d);
+direction reverse(direction d);
 
 #endif /* path_h */
