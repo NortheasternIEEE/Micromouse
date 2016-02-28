@@ -14,7 +14,7 @@
 
 /*
  * Updates an array of length 4 with the four possible ways the mouse can travel.
- * The first directions are stored in the array as RIGHT, LEFT, UP and then DOWN
+ * The first directions are stored in the array as RIGHT, LEFT, UP and then DOWN 
  * If the mouse can move RIGHT, LEFT, UP or DOWN the corresponding value is stored in the array
  * otherwise STOP is stored
  */
