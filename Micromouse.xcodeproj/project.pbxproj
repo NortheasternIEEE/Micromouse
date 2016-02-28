@@ -11,6 +11,7 @@
 		C91370341C729B0300659AA1 /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = C91370321C729B0300659AA1 /* Utility.c */; };
 		C91370371C729B0C00659AA1 /* map.c in Sources */ = {isa = PBXBuildFile; fileRef = C91370351C729B0C00659AA1 /* map.c */; };
 		C913703A1C729B1600659AA1 /* path.c in Sources */ = {isa = PBXBuildFile; fileRef = C91370381C729B1600659AA1 /* path.c */; };
+		C953196E1C73FE3E00F42870 /* linkedlist.c in Sources */ = {isa = PBXBuildFile; fileRef = C953196C1C73FE3E00F42870 /* linkedlist.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +35,8 @@
 		C91370361C729B0C00659AA1 /* map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = map.h; sourceTree = "<group>"; };
 		C91370381C729B1600659AA1 /* path.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = path.c; sourceTree = "<group>"; };
 		C91370391C729B1600659AA1 /* path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = path.h; sourceTree = "<group>"; };
+		C953196C1C73FE3E00F42870 /* linkedlist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = linkedlist.c; sourceTree = "<group>"; };
+		C953196D1C73FE3E00F42870 /* linkedlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linkedlist.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +76,8 @@
 				C91370331C729B0300659AA1 /* Utility.h */,
 				C91370351C729B0C00659AA1 /* map.c */,
 				C91370361C729B0C00659AA1 /* map.h */,
+				C953196C1C73FE3E00F42870 /* linkedlist.c */,
+				C953196D1C73FE3E00F42870 /* linkedlist.h */,
 			);
 			path = Micromouse;
 			sourceTree = "<group>";
@@ -137,6 +142,7 @@
 				C91370371C729B0C00659AA1 /* map.c in Sources */,
 				C91370341C729B0300659AA1 /* Utility.c in Sources */,
 				C913702C1C729AE200659AA1 /* main.c in Sources */,
+				C953196E1C73FE3E00F42870 /* linkedlist.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +261,7 @@
 				C91370311C729AE200659AA1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -9,22 +9,26 @@
 #include "Utility.h"
 
 
-void moveRobot(struct loc *p, enum directions d) {
+void moveRobot(location *p, direction d) {
     switch (d) {
         case RIGHT:
-            // MOVE RIGHT
+            // MOVE THE MOUSE RIGHT
+            // UPDATE ITS POSITION
             p->x = p->x + 1;
             break;
         case LEFT:
-            // MOVE LEFT
+            // MOVE THE MOUSE LEFT
+            // UPDATE ITS POSITION
             p->x = p->x - 1;
             break;
         case DOWN:
-            // MOVE DOWN
+            // MOVE THE MOUSE DOWN
+            // UPDATE ITS POSITION
             p->y = p->y - 1;
             break;
         case UP:
-            // MOVE UP
+            // MOVE THE MOUSE UP
+            // UPDATE ITS POSITION
             p->y = p->y + 1;
             break;
         case STOP:
@@ -35,66 +39,71 @@ void moveRobot(struct loc *p, enum directions d) {
     }
 }
 
-void initializeLoc(struct loc *spot) {
+void initializeLoc(location *spot) {
     spot->x = 0;
     spot->y = 0;
 }
 
-void  setLoc(struct loc *spot, int x, int y) {
+void  setLoc(location *spot, int x, int y) {
     spot->x = x;
     spot->y = y;
 }
 
-void initializeGraph(struct node param[18][18], int size) {
-    for (int i = 0; i < size; i ++) {
-        for (int j = 0; j < size; j++) {
+void initializeGraph(node param[mazeSize][mazeSize]) {
+    for (int i = 0; i < mazeSize; i ++) {
+        for (int j = 0; j < mazeSize; j++) {
             if (i == 0) {
-                param[i][j].down = false;
-            } else {
-                param[i][j].down = true;
-            }
-            if (i == size - 1){
-                param[i][j].up = false;
-            } else {
-                param[i][j].up = true;
-            }
-            if (j == 0) {
+                // IF i == 0 then you are on the left edge of the maze so the mouse can not move left
                 param[i][j].left = false;
             } else {
                 param[i][j].left = true;
             }
-            if (j == size -1) {
+            if (i == mazeSize - 1){
+                // if i == mazeSize - 1 you are on the right edge so the mouse can not move right
                 param[i][j].right = false;
             } else {
                 param[i][j].right = true;
             }
+            if (j == 0) {
+                // If j == 0 then you are on the bottom edge so the mouse can not move down
+                param[i][j].down = false;
+            } else {
+                param[i][j].down = true;
+            }
+            if (j == mazeSize -1) {
+                // if j == mazeSize - 1 then you are on the top edge so the mouse can not move up
+                param[i][j].up = false;
+            } else {
+                param[i][j].up = true;
+            }
             param[i][j].maped = false;
+            param[i][j].parent = STOP;
         }
     }
 }
 
-enum directions goRight(struct node v) {
+direction goRight(node v) {
     if (v.right) {
         return RIGHT;
     } else {
         return STOP;
     }
 }
-enum directions goLeft(struct node v) {
+direction goLeft(node v) {
     if (v.left) {
         return LEFT;
     } else {
         return STOP;
     }
 }
-enum directions goUp(struct node v) {
+direction goUp(node v) {
     if (v.up) {
         return UP;
     } else {
         return STOP;
     }
 }
-enum directions goDown(struct node v) {
+direction goDown(node v) {
     if (v.down) {
         return DOWN;
     } else {
