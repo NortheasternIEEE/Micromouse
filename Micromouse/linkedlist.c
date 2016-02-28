@@ -15,6 +15,15 @@ void ListInitialize (struct List *list)
 	list->previous = NULL;
 }
 
+void add(Link *list, direction d) {
+    Link *value = malloc(sizeof(Link));
+    value->value = d;
+    value->next = list->next;
+    list->next = value;
+    
+    
+}
+
 //Move to next location on lilst
 void ListNext(struct List *list)
 {
