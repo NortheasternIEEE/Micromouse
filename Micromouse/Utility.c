@@ -111,3 +111,34 @@ direction goDown(node v) {
     }
 }
 
+direction reverse(direction d) {
+    switch (d) {
+        case RIGHT:
+            return LEFT;
+            break;
+        case LEFT:
+            return RIGHT;
+            break;
+        case DOWN:
+            return UP;
+            break;
+        case UP:
+            return DOWN;
+            break;
+        case STOP:
+            return STOP;
+            break;
+        default:
+            return STOP;
+            break;
+    }
+}
+
+void clearMapped(node param[mazeSize][mazeSize]) {
+    for (int i = 0; i < mazeSize; i ++) {
+        for (int j = 0; j < mazeSize; j++) {
+            param[i][j].maped = false;
+        }
+    }
+}
+

@@ -81,6 +81,8 @@ void initializeGraph(node param[mazeSize][mazeSize]);
  * Initialize the location to 0,0
  */
 void initializeLoc(location *spot);
+direction reverse(direction d);
+void clearMapped(node param[mazeSize][mazeSize]);
 
 
 #endif /* Utility_h */

@@ -9,14 +9,16 @@
 #include "path.h"
 
 
-void findPath(node graph[mazeSize][mazeSize], location *start, location end, Link *bestPath) {
-    // If you have already been to this node return
+void findPath(node graph[mazeSize][mazeSize], location *start, location end, Link *bestPath,
+              bWrap *finished) {
+    // If you have already been to this node return  
     if (graph[start->x][start->y].maped == true) {
         return;
     }
     // If you are at the end generate the path
     if ((start->x == end.x) && (start->y == end.y)) {
         dealWithPath(graph, start, bestPath);
+        finished->value = true;
         return;
     }
     // Set the nodes maped value to true
@@ -27,66 +29,44 @@ void findPath(node graph[mazeSize][mazeSize], location *start, location end, Lin
     // Determine how you got to this node
     direction d = graph[start->x][start->y].parent;
     for (int i = 0; i < 4; i++) {
-        if (options[i] != STOP && options[i] != d) {
+        if (options[i] != STOP && options[i] != d && !finished->value) {
             // Moves the location to the spot you are going to go
             updateLoc(start, options[i]);
-            printf("\nX = %d, Y = %d\n", start->x, start->y);
-            printD(reverse(options[i]));
-            printf("\n");
+            
+            //printf("\nX = %d, Y = %d\n", start->x, start->y);
+            //printD(reverse(options[i]));
+            //printf("\n");
+            
             // Set the parent of the node you are about to visit to the current node
             graph[start->x][start->y].parent = reverse(options[i]);
             
-            findPath(graph, start, end, bestPath);
+            findPath(graph, start, end, bestPath, finished);
             // Go back
             goBack(start, options[i]);
         }
     }
 }
 
-direction reverse(direction d) {
-    switch (d) {
-        case RIGHT:
-            return LEFT;
-            break;
-        case LEFT:
-            return RIGHT;
-            break;
-        case DOWN:
-            return UP;
-            break;
-        case UP:
-            return DOWN;
-            break;
-        case STOP:
-            return STOP;
-            break;
-        default:
-            return STOP;
-            break;
-    }
-}
+
 
 void dealWithPath(node graph[mazeSize][mazeSize], location *start, Link *best) {
-    struct List path;
-    ListInitialize(&path);
     location temp;
     temp.x = start->x;
     temp.y = start->y;
     direction parent = graph[temp.x][temp.y].parent;
-    Link node;
-    node.value = parent;
-    pushToHead(&path, &node);
+    add(best, parent);
     while (temp.x != 0 || temp.y != 0) {
         updateLoc(&temp, parent);
         parent = graph[temp.x][temp.y].parent;
-        Link n;
-        n.value = parent;
-        pushToHead(&path, &n);
+        add(best, parent);
     }
-    ListHead(&path);
-    while (path.current->next != NULL) {
-        printf("FEE\n");
-        ListNext(&path);
+    Link *conductor;
+    conductor = malloc(sizeof(Link));
+    conductor = best;
+    while (conductor->next != NULL) {
+        //printD(conductor->value);
+        //printf("\n");
+        conductor = conductor->next;
     }
 }
 
@@ -103,6 +83,9 @@ void printD(direction d) {
             break;
         case DOWN:
             printf("DOWN");
+            break;
+        case STOP:
+            printf("STOP");
             break;
         default:
             break;

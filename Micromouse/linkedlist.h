@@ -33,5 +33,6 @@ void ListNext(struct List *list);
 void ListHead(struct List *list);
 void ListInsert(struct List *list, Link *lNode1);
 void ListRemove(struct List *list);
+void add(Link *list, direction d);
 
 #endif /* linkedlist_h */
