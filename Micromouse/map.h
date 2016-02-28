@@ -12,9 +12,20 @@
 #include <stdio.h>
 #include "Utility.h"
 
-
-void getSuccessors(struct node v, enum directions array[4]);
-void map(struct loc *position, struct node param[18][18]);
-void visit(struct node *n);
+/*
+ * Updates an array of length 4 with the four possible ways the mouse can travel.
+ * The first directions are stored in the array as RIGHT, LEFT, UP and then DOWN 
+ * If the mouse can move RIGHT, LEFT, UP or DOWN the corresponding value is stored in the array
+ * otherwise STOP is stored
+ */
+void getSuccessors(node v, direction array[4]);
+/*
+ * Maps the maze from the starting positon
+ */
+void map(location *position, node param[mazeSize][mazeSize]);
+/*
+ * When a mouse first enters a unseen node preforms all the necessary actions 
+ */
+void visit(node *n);
 
 #endif /* map_h */
