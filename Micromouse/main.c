@@ -26,14 +26,12 @@ int main(int argc, const char * argv[]) {
     bestPath = malloc(sizeof(Link));
     bestPath->value = STOP;
     bestPath->next = NULL;
-    enum directions ways[4];
-    int size = NELEMS(graph);
     bWrap finished;
     finished.value = false;
     initializeGraph(graph);
     initializeLoc(&currentPoint);
     map(&currentPoint, graph);
-    findPath(graph, &currentPoint, end, bestPath, &finished);
+    /*findPath(graph, &currentPoint, end, bestPath, &finished);
     Link *conductor;
     conductor = malloc(sizeof(Link));
     conductor = bestPath;
@@ -41,7 +39,7 @@ int main(int argc, const char * argv[]) {
         printD(conductor->value);
         printf("\n");
         conductor = conductor->next;
-    }
+    }*/
     return 0;
 }
 

@@ -28,4 +28,8 @@ void map(location *position, node param[mazeSize][mazeSize]);
  */
 void visit(node *n);
 
+void getSuccessors1(node param[mazeSize][mazeSize], node v, direction array[4], int x, int y);
+
+bool canMove(location *p, direction d, node param[mazeSize][mazeSize]);
+
 #endif /* map_h */
