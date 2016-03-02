@@ -25,15 +25,15 @@ void map(location *position, node param[mazeSize][mazeSize]) {
         // Move the mouse that direction and update its location
         if (canMove(position, options[i], param)) {
             moveRobot(position, options[i]);
-            //printf("Moved to: ");
-            //printf("X = %d, Y = %d\n",position->x, position->y);
+            printf("Moved to: ");
+            printf("X = %d, Y = %d\n",position->x, position->y);
             // Map the maze starting from that new location
-            map(position, param);
+            map(position, param); // COME OUT HERE
             // GO BACK - Not implemented yet
             moveRobot(position, reverse(options[i]));
         }
-        //printf("Go back to: ");
-        //printf("X = %d, Y = %d\n",position->x, position->y);
+        printf("Go back to: ");
+        printf("X = %d, Y = %d\n",position->x, position->y);
     }
 }
 
@@ -82,6 +82,8 @@ bool canMove(location *p, direction d, node param[mazeSize][mazeSize]) {
 
 void visit(node *n) {
     n->maped = true;
+    
+    // FIGURE OUT ALL THE SENOR SHIT
 }
 
 void getSuccessors(node v, direction array[4]) {
@@ -89,6 +91,7 @@ void getSuccessors(node v, direction array[4]) {
     array[1] = goLeft(v);
     array[2] = goUp(v);
     array[3] = goDown(v);
+    // SOME FANCY SHIT THAT CHANGES STUFF AROUND
 }
 
 void getSuccessors1(node param[mazeSize][mazeSize], node v, direction array[4], int x, int y) {
