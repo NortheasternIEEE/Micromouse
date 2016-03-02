@@ -19,9 +19,15 @@
 int main(int argc, const char * argv[]) {
     struct node graph[mazeSize][mazeSize];
     struct loc currentPoint;
-    location end;
-    end.x = 8;
-    end.y = 8;
+    location end[4];
+    end[0].x = 8;
+    end[0].y = 8;
+    end[1].x = 8;
+    end[1].y = 9;
+    end[2].x = 9;
+    end[2].y = 8;
+    end[3].x = 9;
+    end[3].y = 9;
     Link *bestPath;
     bestPath = malloc(sizeof(Link));
     bestPath->value = STOP;

@@ -14,7 +14,7 @@ void map(location *position, node param[mazeSize][mazeSize]) {
     int y = position->y;
     // If you have already been to this node return
     if (param[x][y].maped) {return;}
-    printf("X = %d, Y = %d\n",x, y);
+    //printf("X = %d, Y = %d\n",x, y);
     direction options[4];
     // Visit the node to get all the relevant information you need
     visit(&param[x][y]);
@@ -25,15 +25,15 @@ void map(location *position, node param[mazeSize][mazeSize]) {
         // Move the mouse that direction and update its location
         if (canMove(position, options[i], param)) {
             moveRobot(position, options[i]);
-            printf("Moved to: ");
-            printf("X = %d, Y = %d\n",position->x, position->y);
+            //printf("Moved to: ");
+            //printf("X = %d, Y = %d\n",position->x, position->y);
             // Map the maze starting from that new location
             map(position, param);
             // GO BACK - Not implemented yet
             moveRobot(position, reverse(options[i]));
         }
-        printf("Go back to: ");
-        printf("X = %d, Y = %d\n",position->x, position->y);
+        //printf("Go back to: ");
+        //printf("X = %d, Y = %d\n",position->x, position->y);
     }
 }
 
