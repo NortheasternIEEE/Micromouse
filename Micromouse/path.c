@@ -12,7 +12,7 @@
 void findPath(node graph[mazeSize][mazeSize], location *start, location end[4], Link *bestPath,
               bWrap *finished) {
     // If you have already been to this node return  
-    if (graph[start->x][start->y].maped == true) {
+    if (graph[start->x][start->y].mapped == true) {
         return;
     }
     // If you are at the end generate the path
@@ -24,8 +24,8 @@ void findPath(node graph[mazeSize][mazeSize], location *start, location end[4], 
         finished->value = true;
         return;
     }
-    // Set the nodes maped value to true
-    graph[start->x][start->y].maped = true;
+    // Set the nodes mapped value to true
+    graph[start->x][start->y].mapped = true;
     direction options[4];
     // Get where you can go from this node
     getSuccessors(graph[start->x][start->y], options);

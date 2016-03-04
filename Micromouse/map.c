@@ -13,7 +13,7 @@ void map(location *position, node param[mazeSize][mazeSize]) {
     int x = position->x;
     int y = position->y;
     // If you have already been to this node return
-    if (param[x][y].maped) {return;}
+    if (param[x][y].mapped) {return;}
     //printf("X = %d, Y = %d\n",x, y);
     direction options[4];
     // Visit the node to get all the relevant information you need
@@ -45,28 +45,28 @@ bool canMove(location *p, direction d, node param[mazeSize][mazeSize]) {
     switch (d) {
         case RIGHT:
             temp.x = temp.x + 1;
-            if (param[temp.x][temp.y].maped) {
+            if (param[temp.x][temp.y].mapped) {
                 return false;
             }
             return true;
             break;
         case LEFT:
             temp.x = temp.x - 1;
-            if (param[temp.x][temp.y].maped) {
+            if (param[temp.x][temp.y].mapped) {
                 return false;
             }
             return true;
             break;
         case UP:
             temp.y = temp.y + 1;
-            if (param[temp.x][temp.y].maped) {
+            if (param[temp.x][temp.y].mapped) {
                 return false;
             }
             return true;
             break;
         case DOWN:
             temp.y = temp.y - 1;
-            if (param[temp.x][temp.y].maped) {
+            if (param[temp.x][temp.y].mapped) {
                 return false;
             }
             return true;
@@ -81,7 +81,7 @@ bool canMove(location *p, direction d, node param[mazeSize][mazeSize]) {
 }
 
 void visit(node *n) {
-    n->maped = true;
+    n->mapped = true;
     
     // FIGURE OUT ALL THE SENOR SHIT
 }
@@ -100,28 +100,28 @@ void getSuccessors1(node param[mazeSize][mazeSize], node v, direction array[4], 
         switch (array[i]) {
             case RIGHT:
                 x = x + 1;
-                if (param[x][y].maped) {
+                if (param[x][y].mapped) {
                     array[i] = STOP;
                 }
                 x = x - 1;
                 break;
             case LEFT:
                 x = x - 1;
-                if (param[x][y].maped) {
+                if (param[x][y].mapped) {
                     array[i] = STOP;
                 }
                 x = x + 1;
                 break;
             case UP:
                 y = y + 1;
-                if (param[x][y].maped) {
+                if (param[x][y].mapped) {
                     array[i] = STOP;
                 }
                 y = y - 1;
                 break;
             case DOWN:
                 y = y - 1;
-                if (param[x][y].maped) {
+                if (param[x][y].mapped) {
                     array[i] = STOP;
                 }
                 y = y + 1;

@@ -8,7 +8,7 @@
 
 #include "linkedlist.h"
 
-void ListInitialize (struct List *list)
+void mapped (struct List *list)
 {
 	list->head = NULL;
 	list->current = NULL;
