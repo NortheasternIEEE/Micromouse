@@ -1,0 +1,66 @@
+#include <Adafruit_BNO055.h>
+#include <VL6180X.h>
+#include <Wire.h>
+
+VL6180X rightSensor;
+VL6180X leftSensor;
+uint8_t leftAddress = 0x27h;
+uint8_t rightAddress = 0x9;
+int mazeSize = 16;
+
+typedef enum directions {RIGHT, LEFT, UP, DOWN, STOP} direction;
+typedef struct node {
+    bool right;
+    bool left;
+    bool up;
+    bool down;
+    bool maped;
+    direction parent;
+} node;
+
+typedef struct loc {
+    int x;
+    int y;
+} location;
+
+
+
+
+void setup() {
+  Wire.begin(); // Initialize the wire library
+  digitalWrite(pin, 0); // Write to the GPIO pin to toggle the left
+                   // off
+  rightSensor.init();
+  uint8_t address = 0x9;
+  rightSensor.setAddress(address); // Set the address if the IR
+  // sensor.setTimeout(500); Set the timeout if we want to
+  leftSensor.init() // Initialize the left sensor
+  digitalWrite(pin, 1) // Turn it on 
+  Serial.begin(9600);
+}
+
+void loop() {
+ int left, right;
+
+ boolean map = true;
+ if (map) {
+  map = false;
+  mapTheMaze();
+ }
+ right = readSensor(rightAddress);
+ delay(.01);
+ left = readSensor(leftAddress);
+ delay(.01);
+}
+
+void mapTheMaze() {
+  
+}
+
+int readSensor(uint8_t address) {
+  Wire.begin(address);
+  Serial.print("\tRange: ");
+  Serial.print(sensor.readRangeContinuous());
+  Serial.println();
+  return sensor.readRangeContinuous();
+}
