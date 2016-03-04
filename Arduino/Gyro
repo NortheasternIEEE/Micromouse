@@ -1,0 +1,26 @@
+#include <Wire.h>
+#include <Adafruit_BNO055.h>
+void setup() {
+  
+  Serial.begin(115200);
+  if (!bno.begin()) {
+    Serial.print("No BNO055 detected");
+    while(1);  
+  }
+  displaySensorDetails();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  sensors_event_t event;
+  bno.getEvent(&event);
+
+  Serial.print("Orientation: ");
+  Serial.print((float)event.orientation.x);
+  Serial.print(" ");
+  Serial.print((float)event.orientation.y);
+  Serial.print(" ");
+  Serial.print((float)event.orientation.z);
+  Serial.print(" ");
+  Serial.print("\n");
+}
