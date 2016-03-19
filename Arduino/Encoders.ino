@@ -19,6 +19,9 @@
 //Encoder 1 has OUT A going to pin 20
 //Encoder 1 has OUT B going to pin 12
 
+#include "Arduino.h";
+#include <digitalWriteFast.h>
+
 int leftEncoder_PIN_A = 19;
 int leftEncoder_PIN_B = 21;
 int rightEncoder_PIN_A = 20;
@@ -28,10 +31,6 @@ volatile int leftEncoderOutA_State = LOW;
 volatile int leftEncoderOutB_State = LOW;
 volatile int rightEncoderOutA_State = LOW;
 volatile int rightEncoderOutB_State = LOW;
-
-#include "Arduino.h";
-#include <digitalWriteFast.h>
-
 
 void setup() {
   //since working with the zero micro we can do the folowing
