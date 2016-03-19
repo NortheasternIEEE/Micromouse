@@ -27,7 +27,7 @@ typedef enum directions {RIGHT, LEFT, UP, DOWN, STOP} direction;
  * A struct that represents a node in the maze. For each square in the maze there will be a node so
  * for a maze of size 10 x 10 there will be 100 nodes in the maze. 
  * Within each node there are four booleans that represent if the micromouse is able to travel right,
- * left, up or down. The boolean maped is used to determine if the mouse has already visited the cell
+ * left, up or down. The boolean mapped is used to determine if the mouse has already visited the cell
  * in the graph. The parent store the reverse of the direction the mouse had to move to get to this cell.
  * For example if the mouse starts at cell 0,0 and moves to cell 1,0, the mouse moves right, then 
  * the parent of cell 1,0 will be left.
@@ -37,7 +37,7 @@ typedef struct node {
     bool left;
     bool up;
     bool down;
-    bool maped;
+    bool mapped;
     direction parent;
 } node;
 
@@ -74,7 +74,7 @@ direction goUp(node v);
  */
 direction goDown(node v);
 /*
- * Initialize the graph. Set every nodes' maped value to false and parent to STOP
+ * Initialize the graph. Set every nodes' mapped value to false and parent to STOP
  */
 void initializeGraph(node param[mazeSize][mazeSize]);
 /*

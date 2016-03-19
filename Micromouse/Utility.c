@@ -76,7 +76,7 @@ void initializeGraph(node param[mazeSize][mazeSize]) {
             } else {
                 param[i][j].up = true;
             }
-            param[i][j].maped = false;
+            param[i][j].mapped = false;
             param[i][j].parent = STOP;
         }
     }
@@ -137,7 +137,7 @@ direction reverse(direction d) {
 void clearMapped(node param[mazeSize][mazeSize]) {
     for (int i = 0; i < mazeSize; i ++) {
         for (int j = 0; j < mazeSize; j++) {
-            param[i][j].maped = false;
+            param[i][j].mapped = false;
         }
     }
 }
