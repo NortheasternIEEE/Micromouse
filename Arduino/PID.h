@@ -18,9 +18,4 @@ uint16_t PIDoutput(PID sensor, uint16_t location, uint16_t setPoint);
 void setAccumulation(PID sensor, uint16_t error);
 void setPreviousError(PID sensor, uint16_t location);
 
-
-<<<<<<< HEAD
 #endif
-=======
-#endif
->>>>>>> origin/master
