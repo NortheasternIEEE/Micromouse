@@ -16,13 +16,6 @@ METHODS:
 The following functions will be applied to the PID, but will be 
 ordinary functions elsewhere in the code. 
 */
-struct PID {
-	uint16_t gainP;
-	uint16_t gainI;
-	uint16_t gainD;
-	uint16_t accumulation = 0;
-	uint16_t previousError = 0; 
-}
 
 //location, setPoint-> error 
 //computes the error for a sensor at time. 
