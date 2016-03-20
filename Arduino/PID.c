@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 /* PID is a structure that keeps the robot on track. It uses a set 
 point (the goal), and p(t) (current location) to determine where
 it wants to go. The PID structure will be created to represent the
@@ -15,6 +19,7 @@ METHODS:
 The following functions will be applied to the PID, but will be 
 ordinary functions elsewhere in the code. 
 */
+<<<<<<< HEAD
 struct PID {
 	uint16_t gainP;
 	uint16_t gainI;
@@ -22,6 +27,8 @@ struct PID {
 	uint16_t accumulation = 0;
 	uint16_t previousError = 0; 
 }
+=======
+>>>>>>> origin/master
 
 //location, setPoint-> error 
 //computes the error for a sensor at time. 
@@ -54,4 +61,8 @@ void setAccumulation(PID sensor, uint16_t error) {
 // PID sensor, error -> sensor.previousError
 void setPreviousError(PID sensor, uint16_t location) {
 	sensor.previousError = location; 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master
