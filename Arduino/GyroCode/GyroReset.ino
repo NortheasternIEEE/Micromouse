@@ -9,7 +9,7 @@
 int ledPin = 13;
 
 // example location for testing
-Location position;
+location position;
 
 // Note: We commented out the error in the header file regarding the ADR pin being set to high
 // We did not actually change the pin to High so if we have errors it might be the cause
@@ -43,12 +43,12 @@ void setup() {
     Serial.print("No BNO055 detected");
     while(1);  
   }
-  pinMode(ledPin, OUTPUT); //CHANGE THIS NUMBER
+  pinMode(ledPin, OUTPUT); //CHANGE THIS NUMBER - We are not going to be using this LED pin
   displaySensorDetails();
-  position.x = 23;
-  position.y = 15;
-  Serial.println(position.x);
-  Serial.println(position.y);
+  // position.x = 23;
+  // position.y = 15;
+  // Serial.println(position.x);
+  // Serial.println(position.y);
   }
 
 // resets location if angle greater than 45 deg
