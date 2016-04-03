@@ -8,6 +8,11 @@
 
 int ledPin = 13;
 
+int sensorPinFront = A1;    // select the input for sensor
+int sensorPinBack = A2;    // select the input for sensor
+int sensorValueFront = 0;  // Stores Value from sensor
+int sensorValueBack = 0;  // Stores Value from sensor
+
 // example location for testing
 location position;
 
@@ -49,6 +54,8 @@ void setup() {
   // position.y = 15;
   // Serial.println(position.x);
   // Serial.println(position.y);
+  pinMode(sensorPinFront, INPUT);
+  pinMode(sensorPinBack, INPUT);
   }
 
 // resets location if angle greater than 45 deg
@@ -69,6 +76,29 @@ void ResetCrashed(location *loc) {
   {
     // Otherwise turn the LED off
     digitalWrite(ledPin, LOW);
+  }
+}
+
+// Determine when you are back at the start
+int atStart() {
+  while (1) {
+    sensors_event_t event;
+    bno.getEvent($event);
+
+    //Are you below 10 degrees for your z axis, if so then ping the walls
+    if (((float))event.orientation.z < 10 && (float)event.orientation.z > 350) {
+        sensorValueBack = analogRead(sensorPinBack);
+        if (sensorValueBack) {
+          sensorValueBack = analogRead(sensorPinBack);
+          if (sensorValueBack) {
+            return 1;
+          }
+        }
+        delay(100);
+    }
+    else {
+      delay(100);
+    }
   }
 }
 
