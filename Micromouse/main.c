@@ -37,7 +37,7 @@ int main(int argc, const char * argv[]) {
     initializeGraph(graph);
     initializeLoc(&currentPoint);
     map(&currentPoint, graph);
-    /*findPath(graph, &currentPoint, end, bestPath, &finished);
+    findPath(graph, &currentPoint, end, bestPath, &finished);
     Link *conductor;
     conductor = malloc(sizeof(Link));
     conductor = bestPath;
@@ -45,7 +45,7 @@ int main(int argc, const char * argv[]) {
         printD(conductor->value);
         printf("\n");
         conductor = conductor->next;
-    }*/
+    }
     return 0;
 }
 
