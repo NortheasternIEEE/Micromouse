@@ -1,0 +1,22 @@
+int sensorPinFront = A3;    // select the input for sensor
+int sensorPinBack = A4;    // select the input for sensor
+int sensorValueFront = 0;  // Stores Value from sensor
+int sensorValueBack = 0;  // Stores Value from sensor
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(sensorPinFront, INPUT);
+  pinMode(sensorPinBack, INPUT_PULLUP);
+}
+
+void loop() {
+   read value from the sensor with :
+   sensorValueFront = !digitalRead(sensorPinFront);
+   sensorValueBack = !digitalRead(sensorPinBack);
+   Serial.print("Front Sensor: ");
+   Serial.print(sensorValueFront); //Front 
+   Serial.print("\t");
+   Serial.print("Back Sensor: ");
+   Serial.println(sensorValueBack);
+   delay(100);
+}
