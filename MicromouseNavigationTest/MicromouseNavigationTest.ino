@@ -1,11 +1,12 @@
 
 #include "Drive.h"
 #include "Sensors.h"
+#include "PingSensors.h"
 
 void setup() {
 
   Serial.begin(9600);
-  pinMode(13, OUTPUT);
+  /*pinMode(13, OUTPUT);
   digitalWrite(13, LOW);
 
   sensorsInit();
@@ -14,12 +15,19 @@ void setup() {
  
   drive(0.6, 0);
   delay(2000);
-  brake();
-  
+  brake();*/
+  pinMode(14, OUTPUT);
+  digitalWrite(13, HIGH);
+  delay(100);
+  digitalWrite(13, LOW);
 }
 
 void loop() {
-  //Empty
+  //pingFrontSensor();
+  digitalWrite(14, HIGH);
+  pingBackSensor();
+  delay(100);
+  pingFrontSensor();
 }
 
 

@@ -1,9 +1,9 @@
 
 #include <Wire.h>
 #include "Adafruit_Sensor.h"
-#include <Adafruit_BNO055.h>
-#include <utility/imumaths.h>
-#include <VL6180X.h>
+#include "Adafruit_BNO055.h"
+#include "imumaths.h"
+#include "VL6180X.h"
 
 #include "Sensors.h"
 
@@ -117,10 +117,6 @@ VL6180X leftSensor;
 void distanceInit(void);
 
 void distanceInit() {
-  //Front and Back Distance Sensors
-  pinMode(FRONT_DISTANCE_SENSOR, INPUT);
-  pinMode(BACK_DISTANCE_SENSOR, INPUT);
-
   //Left and Right Distance Sensors
   // First, let's change the address of the right sensor
   pinMode(LEFT_CE, OUTPUT);
@@ -138,15 +134,6 @@ void distanceInit() {
   rightSensor.setTimeout(500);
 }
 
-uint8_t getFrontDistance() {
-  uint8_t val = !digitalRead(FRONT_DISTANCE_SENSOR);
-  Serial.println(val);
-  return val;
-}
-
-uint8_t getBackDistance() {
-  return !digitalRead(BACK_DISTANCE_SENSOR);
-}
 
 uint8_t getLeftDistance() {
   return leftSensor.readRangeSingle();
