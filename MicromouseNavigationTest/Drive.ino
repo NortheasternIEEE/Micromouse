@@ -128,6 +128,7 @@ void updatePID(float yaw) {
 }
 
 volatile uint8_t distanceUpdateCounter = 0;
+volatile int differenceAccumulator = 0;
 
 void updateDrivePID(float yaw) {
   //make it so that values below 0 don't jump to 360
@@ -137,14 +138,21 @@ void updateDrivePID(float yaw) {
   
   float adjustedYaw = constrain(floatMap(yaw, -180, 180, -1, 1), -1, 1);
 
-  distanceUpdateCounter++;
-
-  if(distanceUpdateCounter == 2) {
+ 
+  
+  if(distanceUpdateCounter % 2) {
+    differenceAccumulator += getRightDistance()-getLeftDistance();
+  }
+  if(distanceUpdateCounter == 10) {
     //calculate some adjustment based on distance sensors
-    int difference = getRightDistance()-getLeftDistance();
+    int difference = differenceAccumulator / 5;
+    differenceAccumulator = 0;
     float newSetpoint = constrain(difference*HORIZONTAL_ADJUSTMENT_COEFFICIENT, -1, 1);
     pid_sat_set_setpoint((pid_sat_t*)&drive_pid, newSetpoint);
     distanceUpdateCounter = 0;
+  }
+  else {
+    distanceUpdateCounter++;
   }
   
   // generate our PID controller output

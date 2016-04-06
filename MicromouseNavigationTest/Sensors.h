@@ -38,6 +38,7 @@ void resetEncoders(void);
 
 //-------- DISTANCE --------//
 
+#define PING_POWER            A0
 #define FRONT_DISTANCE_SENSOR A4
 #define BACK_DISTANCE_SENSOR  A3
 

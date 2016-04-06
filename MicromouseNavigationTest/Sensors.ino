@@ -137,26 +137,17 @@ void distanceInit() {
   
   leftSensor.setTimeout(500);
   rightSensor.setTimeout(500);
+
+  //Turn on PING supply
+  pinMode(PING_POWER, OUTPUT);
+  digitalWrite(PING_POWER, HIGH);
 }
 
 volatile uint8_t left = 0;
 volatile uint8_t right = 0;
 
-uint8_t getFrontDistance() {
-  uint16_t positive = 0;
-  for(uint16_t i = 0; i < 5000; i++) {
-    positive += !digitalRead(FRONT_DISTANCE_SENSOR);
-    delayMicroseconds(1);
-  }
-  return positive > 4950;
-}
-
-uint8_t getBackDistance() {
-  return !digitalRead(BACK_DISTANCE_SENSOR);
-}
-
 uint8_t getLeftDistance() {
-  return leftSensor.readRangeSingle();
+  return leftSensor.readRangeSingle()+2;
 }
 
 uint8_t getRightDistance() {

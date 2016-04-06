@@ -10,12 +10,15 @@ void setup() {
   sensorsInit();
   delay(5); //make sure it's initialized out of phase as the PID timer
   driveInit();
- 
-  drive(0.9, 0);
-  long start = millis();
-  while(millis()-start < 200);
-  drive(0.4, 0);
-  
+
+
+  float res;
+  drive(0.55, 0);
+  while(getPosition() < 18) {
+     Serial.println(getPosition());
+     delay(50);
+  }
+  brake();
 }
 
 void loop() {
