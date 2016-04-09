@@ -45,8 +45,6 @@ void getOrientation(float* x, float* y, float* z) {
 
 volatile uint32_t leftTicks = 0;
 volatile uint32_t rightTicks = 0;
-volatile float previousPosition = 0;
-volatile float encoderVelocity = 0;
 volatile float encoderPosition = 0;
 
 void ISR_leftEncoder_OUTA(void);
@@ -61,8 +59,6 @@ void encodersInit() {
   pinMode(RIGHT_ENCODER_A, INPUT);
   attachInterrupt(LEFT_ENCODER_A, ISR_leftEncoder_OUTA, RISING);
   attachInterrupt(RIGHT_ENCODER_A, ISR_rightEncoder_OUTA, RISING);
-
-  configureTimer(TCC1, TCC1_IRQn, 1874);
 }
 
 //interrupt service request, called when leftEncoderOUTA_State goes High
@@ -77,36 +73,15 @@ void ISR_rightEncoder_OUTA()
   rightTicks++;
 }
 
-void TCC1_Handler() 
-{
-  if(TCC1->INTFLAG.bit.OVF == 1) 
-  {
-    //Timer overflowed, 1875 counts/10ms have passed
-    TCC1->INTFLAG.bit.OVF = 1; // clear flag
-      //where encoder position is the average of the left and right encoders    
-    encoderPosition = ((leftTicks + rightTicks)/2.0);
-    float dp = encoderPosition - previousPosition; //change in position
-    encoderVelocity = ((float)dp)/0.01; //definition of the derivative, and we know it'll be called every 0.01s
-    previousPosition = encoderPosition; //update position so that the next time the interrupt is called, we have it
-  }
-}
-
 //in cm
 float getPosition() {
-  return (encoderPosition/TICKS_IN_ONE_REVOLUTION) * WHEEL_CIRCUMFERENCE;
-}
-
-//in cm/s
-float getVelocity() {
-  return (encoderVelocity/TICKS_IN_ONE_REVOLUTION) * WHEEL_CIRCUMFERENCE;
+  return (((leftTicks+rightTicks)/2.0)/TICKS_IN_ONE_REVOLUTION) * WHEEL_CIRCUMFERENCE;
 }
 
 void resetEncoders() {
   leftTicks = 0;
   rightTicks = 0;
   encoderPosition = 0;
-  encoderVelocity = 0;
-  previousPosition = 0;
 }
 
 //-------- DISTANCE SENSORS --------//
@@ -143,11 +118,8 @@ void distanceInit() {
   digitalWrite(PING_POWER, HIGH);
 }
 
-volatile uint8_t left = 0;
-volatile uint8_t right = 0;
-
 uint8_t getLeftDistance() {
-  return leftSensor.readRangeSingle()+2;
+  return leftSensor.readRangeSingle()+LEFT_DISTANCE_OFFSET;
 }
 
 uint8_t getRightDistance() {

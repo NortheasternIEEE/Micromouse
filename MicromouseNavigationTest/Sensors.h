@@ -33,7 +33,6 @@ void getOrientation(float*, float*, float*);
 #define TICKS_PER_CELL (TICKS_IN_ONE_REVOLUTION*DISTANCE_BETWEEN_CELLS/WHEEL_CIRCUMFERENCE)
 
 float getPosition(void);
-float getVelocity(void);
 void resetEncoders(void);
 
 //-------- DISTANCE --------//
@@ -44,6 +43,8 @@ void resetEncoders(void);
 
 #define LEFT_CE 11
 #define NEW_RIGHT_ADDRESS 0x09
+
+#define LEFT_DISTANCE_OFFSET 4
 
 uint8_t getLeftDistance(void);
 uint8_t getRightDistance(void);

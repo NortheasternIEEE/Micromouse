@@ -9,6 +9,17 @@ volatile uint8_t driving = 0;
 volatile uint8_t turning = 0;
 volatile float driveSpeed = 0; //the y speed for driving
 
+//Track the number of times we've called the drive PID so that we know
+//when to adjust our drive based on side measurements
+volatile uint8_t distanceUpdateCounter = 0;
+
+//Accumulate difference between sensor measurements to take the measurements
+volatile int differenceAccumulator = 0;
+
+//sometimes we want to ignore our counts if we're not in a straight hallway
+//so record the number of valid counts we've taken
+volatile uint8_t countsTaken = 0; 
+
 volatile pid_sat_t drive_pid;
 volatile pid_sat_t turn_pid;
 
@@ -30,7 +41,7 @@ void driveInit() {
   pid_sat_init((pid_sat_t*)&drive_pid, DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_MIN, DRIVE_MAX); //set gains and limits
   pid_sat_init((pid_sat_t*)&turn_pid, TURN_KP, TURN_KI, TURN_KD, TURN_MIN, TURN_MAX);
 
-  configureTimer(TCC0, TCC0_IRQn, 1874); //configure to execute every 30ms
+  configureTimer(TCC0, TCC0_IRQn, (1875*5)-1); //configure to execute every 30ms
 }
 
 void setLeftMotorDirection(int8_t dir) {
@@ -108,6 +119,10 @@ uint8_t isTurning() {
 }
 
 void drive(float newSpeed, float angle) {
+  //clear variables from previous driving
+  distanceUpdateCounter = 0;
+  differenceAccumulator = 0;
+  countsTaken = 0; 
   pid_sat_reset((pid_sat_t*)&drive_pid);
   pid_sat_set_setpoint((pid_sat_t*)&drive_pid, angle);
   driveSpeed = newSpeed;
@@ -127,9 +142,6 @@ void updatePID(float yaw) {
   }
 }
 
-volatile uint8_t distanceUpdateCounter = 0;
-volatile int differenceAccumulator = 0;
-
 void updateDrivePID(float yaw) {
   //make it so that values below 0 don't jump to 360
   if(yaw > 180) {
@@ -138,16 +150,27 @@ void updateDrivePID(float yaw) {
   
   float adjustedYaw = constrain(floatMap(yaw, -180, 180, -1, 1), -1, 1);
 
- 
-  
   if(distanceUpdateCounter % 2) {
-    differenceAccumulator += getRightDistance()-getLeftDistance();
+    uint8_t left = getLeftDistance();
+    uint8_t right = getRightDistance();
+    Serial.print(right);
+    Serial.print('\t');
+    Serial.print(left);
+    Serial.print('\t');
+    Serial.println(right-left);
+    if(fabs(left-right) < 120) {
+      differenceAccumulator += right-left;
+      countsTaken++;
+      Serial.println("t");
+    }
   }
-  if(distanceUpdateCounter == 10) {
+  
+  if(countsTaken >= 5) {
     //calculate some adjustment based on distance sensors
-    int difference = differenceAccumulator / 5;
+    float difference = ((float)differenceAccumulator) / ((float)countsTaken);
     differenceAccumulator = 0;
-    float newSetpoint = constrain(difference*HORIZONTAL_ADJUSTMENT_COEFFICIENT, -1, 1);
+    countsTaken = 0;
+    float newSetpoint = constrain(difference*LATERAL_ADJUSTMENT_COEFFICIENT, -1, 1);
     pid_sat_set_setpoint((pid_sat_t*)&drive_pid, newSetpoint);
     distanceUpdateCounter = 0;
   }
