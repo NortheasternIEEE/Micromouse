@@ -1,0 +1,81 @@
+#include <Adafruit_BNO055.h>
+
+#include "Drive.h"
+#include "Sensors.h"
+#include "linkedlist.h"
+#include "map.h"
+#include "Utility.h"
+#include "path.h"
+
+Link *conductor;
+
+void setup() {
+
+  Serial.begin(9600);
+  pinMode(13, OUTPUT);
+  digitalWrite(13, LOW);
+
+  sensorsInit();
+  delay(5); //make sure it's initialized out of phase as the PID timer
+  driveInit();
+
+ struct node graph[mazeSize][mazeSize];
+ struct loc currentPoint;
+ location end[4];
+ end[0].x = 8;
+ end[0].y = 8;
+ end[1].x = 8;
+ end[1].y = 9;
+ end[2].x = 9;
+ end[2].y = 8;
+ end[3].x = 9;
+ end[3].y = 9;
+ Link *bestPath;
+
+ bestPath = (Link *)malloc(sizeof(Link));
+ bestPath->value = STOP;
+ bestPath->next = NULL;
+ bWrap finished;
+ finished.value = false;
+ initializeGraph(graph);
+ initializeLoc(&currentPoint);
+ map(&currentPoint, graph);
+ findPath(graph, &currentPoint, end, bestPath, &finished);
+ 
+ conductor = (Link *)malloc(sizeof(Link));
+ conductor = bestPath;
+}
+
+void loop() {
+ if (conductor->next != NULL){
+ switch (conductor->value) {
+        case RIGHT:
+            // MOVE THE MOUSE RIGHT
+            drive(18, 90);
+            break;
+        case LEFT:
+            // MOVE THE MOUSE LEFT
+            drive(18, 270);
+            break;
+        case DOWN:
+            // MOVE THE MOUSE DOWN
+            drive(18, 190);
+            break;
+        case UP:
+            // MOVE THE MOUSE UP
+            drive(18, 0);
+            break;
+        case STOP:
+            // DO NOTHING
+            break;
+        default:
+            break;
+    }
+    conductor = conductor->next;
+}
+  
+ else{
+  while (1 == 1);}
+  drive(.5, 0);
+}
+
