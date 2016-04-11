@@ -81,29 +81,77 @@ bool canMove(location *p, direction d, node param[mazeSize][mazeSize]) {
 }
 
 void visit(node *n) {
-    n->mapped = true;
+  n->mapped = true;
     
-    // FIGURE OUT ALL THE SENOR SHIT
-    if (getLeftDistance() > 18)
-    {
-      n->left = true;
-    }
-    else {false;}
-    if (getRightDistance() > 18)
-    {
-      n->right = true;
-    }
-    else {false;}
-    if (getFrontDistance() > 18)
-    {
+  sensors_event_t event;
+  bno.getEvent(&event);
+
+  float x = (float)event.orientation.z;
+  // FIGURE OUT ALL THE SENOR SHIT
+  if (getLeftDistance() > 18)
+  {
+    if (x > 80 || < 100) {
       n->up = true;
     }
-    else {false;}
-    if (getBackDistance() > 18)
-    {
-      n->down = true;
+    else if (x > 170 || x < 190) {
+      x->right = true;
     }
-    else {false;}
+    else if (x > 260 || x < 280) {
+      x->down = true;
+    }
+    else if (x > 350 || x < 10) {
+      x->left = true;
+    }
+  }
+  else {false;}
+  if (getRightDistance() > 18)
+  {
+    if (x > 80 || < 100) {
+      n->up = true;
+    }
+    else if (x > 170 || x < 190) {
+      x->right = true;
+    }
+    else if (x > 260 || x < 280) {
+      x->down = true;
+    }
+    else if (x > 350 || x < 10) {
+      x->left = true;
+    }
+  }
+  else {false;}
+  if (getFrontDistance() > 18)
+  {
+    if (x > 80 || < 100) {
+      n->up = true;
+    }
+    else if (x > 170 || x < 190) {
+      x->right = true;
+    }
+    else if (x > 260 || x < 280) {
+      x->down = true;
+    }
+    else if (x > 350 || x < 10) {
+      x->left = true;
+    }
+  }
+  else {false;}
+  if (getBackDistance() > 18)
+  {
+    if (x > 80 || < 100) {
+      n->up = true;
+    }
+    else if (x > 170 || x < 190) {
+      x->right = true;
+    }
+    else if (x > 260 || x < 280) {
+      x->down = true;
+    }
+    else if (x > 350 || x < 10) {
+      x->left = true;
+    }
+  }
+  else {false;}
 }
 
 void getSuccessors(node v, direction array[4]) {
