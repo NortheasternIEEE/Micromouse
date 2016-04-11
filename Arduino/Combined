@@ -59,7 +59,7 @@ void loop() {
             break;
         case DOWN:
             // MOVE THE MOUSE DOWN
-            drive(18, 190);
+            drive(18, 180);
             break;
         case UP:
             // MOVE THE MOUSE UP
