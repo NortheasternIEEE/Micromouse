@@ -8,6 +8,7 @@ volatile float prevVal = 0;
 volatile uint8_t driving = 0;
 volatile uint8_t turning = 0;
 volatile float driveSpeed = 0; //the y speed for driving
+volatile float targetAngle = 0; //the last angle that we set the bot to
 
 //Track the number of times we've called the drive PID so that we know
 //when to adjust our drive based on side measurements
@@ -109,8 +110,13 @@ void arcadeDrive(float xPower, float yPower, float* leftOutput, float* rightOutp
 }
 
 void turn(float angle) {
+  turnAbsolute(targetAngle+angle);
+}
+
+void turnAbsolute(float angle) {
+  targetAngle = angle;
   pid_sat_reset((pid_sat_t*)&turn_pid);
-  pid_sat_set_setpoint((pid_sat_t*)&turn_pid, angle);
+  pid_sat_set_setpoint((pid_sat_t*)&turn_pid, 0);
   turning = 1;
 }
 
@@ -118,15 +124,31 @@ uint8_t isTurning() {
   return turning;
 }
 
-void drive(float newSpeed, float angle) {
+void drive(float newSpeed) {
   //clear variables from previous driving
   distanceUpdateCounter = 0;
   differenceAccumulator = 0;
   countsTaken = 0; 
   pid_sat_reset((pid_sat_t*)&drive_pid);
-  pid_sat_set_setpoint((pid_sat_t*)&drive_pid, angle);
+  pid_sat_set_setpoint((pid_sat_t*)&drive_pid, targetAngle);
   driveSpeed = newSpeed;
   driving = 1;
+}
+
+void driveDistance(float distance, float newSpeed) {
+  drive(newSpeed);
+  //apply the sketchy encoder adjustment formula
+  float adjustedDistance = 0.00884956*(4776-sqrt(2.31949*pow(10, 7)-565000*distance));
+  float initialPosition = getPosition();
+  while(getPosition() < initialPosition+adjustedDistance);
+  brake();
+  driveCorrect();
+}
+
+void driveCorrect() {
+  turnAbsolute(targetAngle);
+  while(isTurning());
+  brake();
 }
 
 uint8_t isDriving() {
@@ -135,7 +157,18 @@ uint8_t isDriving() {
 
 void updatePID(float yaw) {
   if(turning) {
-    updateTurnPID(yaw);
+    //make our process variable d[theta]
+    //our setpoint is zero, meaning our PID will push the robot towards a d[theta] of zero
+    //calculate dtheta using a piecewise function
+    float dtheta = 0;
+    if(fabs(targetAngle-yaw) > 180) {
+      dtheta = (360-fabs(targetAngle-yaw))*signum(yaw-targetAngle);
+    }
+    else {
+      dtheta = targetAngle-yaw;
+    }
+    //Serial.println(dtheta);
+    updateTurnPID(dtheta);
   }
   if(driving) {
     updateDrivePID(yaw);
@@ -153,19 +186,15 @@ void updateDrivePID(float yaw) {
   if(distanceUpdateCounter % 2) {
     uint8_t left = getLeftDistance();
     uint8_t right = getRightDistance();
-    Serial.print(right);
-    Serial.print('\t');
-    Serial.print(left);
-    Serial.print('\t');
-    Serial.println(right-left);
     if(fabs(left-right) < 120) {
+      
       differenceAccumulator += right-left;
       countsTaken++;
-      Serial.println("t");
     }
   }
   
-  if(countsTaken >= 5) {
+  if(countsTaken >= LR_COUNTS) {
+    digitalWrite(13, HIGH);
     //calculate some adjustment based on distance sensors
     float difference = ((float)differenceAccumulator) / ((float)countsTaken);
     differenceAccumulator = 0;
@@ -200,9 +229,9 @@ void updateDrivePID(float yaw) {
   
 }
 
-void updateTurnPID(float yaw) {
+void updateTurnPID(float dtheta) {
   // generate our PID controller output
-  float output = -pid_sat_update((pid_sat_t*)&turn_pid, yaw);
+  float output = pid_sat_update((pid_sat_t*)&turn_pid, dtheta);
 
   //Set motor directions based on sign
   //if output is positive, it means we need to turn more clockwise,
@@ -216,8 +245,10 @@ void updateTurnPID(float yaw) {
   float leftAnalog = constrain(floatMap(fabs(output), 0, 1, 0, 255), 0, 255);
   float rightAnalog = constrain(floatMap(fabs(output), 0, 1, 0, 255), 0, 255);
 
+  Serial.println(leftAnalog);
+
   //if the same two values are being assigned over and over, then the robot doesnt need to turn anymore
-  if(leftAnalog == prevVal) {
+  if(leftAnalog == prevVal && leftAnalog < STOP_THRESHOLD) {
     zeroCount++;
   }
   else {
