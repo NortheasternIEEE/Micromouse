@@ -78,6 +78,8 @@ void initializeGraph(node param[mazeSize][mazeSize]) {
             }
             param[i][j].mapped = false;
             param[i][j].parent = STOP;
+            param[i][j].x = i;
+            param[i][j].y = j;
         }
     }
 }

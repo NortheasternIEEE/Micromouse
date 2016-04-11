@@ -38,6 +38,8 @@ typedef struct node {
     bool up;
     bool down;
     bool mapped;
+    int x;
+    int y;
     direction parent;
 } node;
 
