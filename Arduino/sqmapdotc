@@ -8,6 +8,7 @@
 
 #include "map.h"
 
+// Made a change
 
 void map(location *position, node param[mazeSize][mazeSize]) {
     int x = position->x;
