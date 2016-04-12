@@ -19,7 +19,7 @@ volatile int differenceAccumulator = 0;
 
 //sometimes we want to ignore our counts if we're not in a straight hallway
 //so record the number of valid counts we've taken
-volatile uint8_t countsTaken = 0; 
+volatile uint8_t countsTaken = 0;
 
 volatile pid_sat_t drive_pid;
 volatile pid_sat_t turn_pid;
@@ -42,11 +42,11 @@ void driveInit() {
   pid_sat_init((pid_sat_t*)&drive_pid, DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_MIN, DRIVE_MAX); //set gains and limits
   pid_sat_init((pid_sat_t*)&turn_pid, TURN_KP, TURN_KI, TURN_KD, TURN_MIN, TURN_MAX);
 
-  configureTimer(TCC0, TCC0_IRQn, (1875*5)-1); //configure to execute every 30ms
+  configureTimer(TCC0, TCC0_IRQn, (1875 * 5) - 1); //configure to execute every 30ms
 }
 
 void setLeftMotorDirection(int8_t dir) {
-  if(dir < 0) {
+  if (dir < 0) {
     digitalWrite(LEFT_MOTOR_1, HIGH);
     digitalWrite(LEFT_MOTOR_2, LOW);
   }
@@ -57,7 +57,7 @@ void setLeftMotorDirection(int8_t dir) {
 }
 
 void setRightMotorDirection(int8_t dir) {
-  if(dir < 0) {
+  if (dir < 0) {
     digitalWrite(RIGHT_MOTOR_1, HIGH);
     digitalWrite(RIGHT_MOTOR_2, LOW);
   }
@@ -110,7 +110,14 @@ void arcadeDrive(float xPower, float yPower, float* leftOutput, float* rightOutp
 }
 
 void turn(float angle) {
-  turnAbsolute(targetAngle+angle);
+  float newTheta = targetAngle + angle;
+  if (newTheta < 0) {
+    newTheta += 360;
+  }
+  else if (newTheta >= 360) {
+    newTheta -= 360;
+  }
+  turnAbsolute(newTheta);
 }
 
 void turnAbsolute(float angle) {
@@ -128,27 +135,32 @@ void drive(float newSpeed) {
   //clear variables from previous driving
   distanceUpdateCounter = 0;
   differenceAccumulator = 0;
-  countsTaken = 0; 
+  countsTaken = 0;
   pid_sat_reset((pid_sat_t*)&drive_pid);
-  pid_sat_set_setpoint((pid_sat_t*)&drive_pid, targetAngle);
+  pid_sat_set_setpoint((pid_sat_t*)&drive_pid, 0);
   driveSpeed = newSpeed;
   driving = 1;
 }
 
 void driveDistance(float distance, float newSpeed) {
+  resetEncoders();
   drive(newSpeed);
   //apply the sketchy encoder adjustment formula
-  float adjustedDistance = 0.00884956*(4776-sqrt(2.31949*pow(10, 7)-565000*distance));
+  float adjustedDistance = SKETCHY_ADJUSTMENT_FORMULA(distance);
   float initialPosition = getPosition();
-  while(getPosition() < initialPosition+adjustedDistance);
+  while (getPosition() < initialPosition + adjustedDistance);
   brake();
   driveCorrect();
 }
 
 void driveCorrect() {
-  turnAbsolute(targetAngle);
-  while(isTurning());
+  pid_sat_init((pid_sat_t*)&turn_pid, DRIVE_CORRECT_KP, DRIVE_CORRECT_KI, DRIVE_CORRECT_KD, TURN_MIN, TURN_MAX);
+  pid_sat_reset((pid_sat_t*)&turn_pid);
+  pid_sat_set_setpoint((pid_sat_t*)&turn_pid, 0);
+  turning = 1;
+  while (isTurning());
   brake();
+  pid_sat_init((pid_sat_t*)&turn_pid, TURN_KP, TURN_KI, TURN_KD, TURN_MIN, TURN_MAX);
 }
 
 uint8_t isDriving() {
@@ -156,60 +168,55 @@ uint8_t isDriving() {
 }
 
 void updatePID(float yaw) {
-  if(turning) {
-    //make our process variable d[theta]
-    //our setpoint is zero, meaning our PID will push the robot towards a d[theta] of zero
-    //calculate dtheta using a piecewise function
-    float dtheta = 0;
-    if(fabs(targetAngle-yaw) > 180) {
-      dtheta = (360-fabs(targetAngle-yaw))*signum(yaw-targetAngle);
-    }
-    else {
-      dtheta = targetAngle-yaw;
-    }
-    //Serial.println(dtheta);
+  //make our process variable d[theta]
+  //our setpoint is zero, meaning our PID will push the robot towards a d[theta] of zero
+  //calculate dtheta using a piecewise function
+  float dtheta = 0;
+  if (fabs(targetAngle - yaw) > 180) {
+    dtheta = (360 - fabs(targetAngle - yaw)) * signum(yaw - targetAngle);
+  }
+  else {
+    dtheta = targetAngle - yaw;
+  }
+  //Serial.println(dtheta);
+  
+  if (turning) {
     updateTurnPID(dtheta);
   }
-  if(driving) {
-    updateDrivePID(yaw);
+  if (driving) {
+    updateDrivePID(dtheta);
   }
 }
 
-void updateDrivePID(float yaw) {
-  //make it so that values below 0 don't jump to 360
-  if(yaw > 180) {
-    yaw -= 360;
-  }
-  
-  float adjustedYaw = constrain(floatMap(yaw, -180, 180, -1, 1), -1, 1);
-
-  if(distanceUpdateCounter % 2) {
+void updateDrivePID(float dtheta) {
+  if (distanceUpdateCounter % 2) {
     uint8_t left = getLeftDistance();
     uint8_t right = getRightDistance();
-    if(fabs(left-right) < 120) {
-      
-      differenceAccumulator += right-left;
+    if (fabs(left - right) < 120) {
+
+      differenceAccumulator += right - left;
       countsTaken++;
     }
   }
-  
-  if(countsTaken >= LR_COUNTS) {
+
+  if (countsTaken >= LR_COUNTS) {
     digitalWrite(13, HIGH);
     //calculate some adjustment based on distance sensors
     float difference = ((float)differenceAccumulator) / ((float)countsTaken);
     differenceAccumulator = 0;
     countsTaken = 0;
-    float newSetpoint = constrain(difference*LATERAL_ADJUSTMENT_COEFFICIENT, -1, 1);
+    float newSetpoint = -constrain(difference * LATERAL_ADJUSTMENT_COEFFICIENT, LATERAL_ADJUSTMENT_MIN, LATERAL_ADJUSTMENT_MAX);
     pid_sat_set_setpoint((pid_sat_t*)&drive_pid, newSetpoint);
     distanceUpdateCounter = 0;
   }
   else {
     distanceUpdateCounter++;
   }
-  
   // generate our PID controller output
-  float output = -pid_sat_update((pid_sat_t*)&drive_pid, adjustedYaw);
-  
+  float output = pid_sat_update((pid_sat_t*)&drive_pid, dtheta);
+
+  Serial.println(output);
+
   //Now, calculate the left and right wheel powers
   float leftPower = 0, rightPower = 0;
   arcadeDrive(output, driveSpeed, &leftPower, &rightPower);
@@ -226,7 +233,7 @@ void updateDrivePID(float yaw) {
   float rightAnalog = constrain(floatMap(fabs(rightPower), 0, 1, 0, 255), 0, 255);
   analogWrite(LEFT_POWER, leftAnalog);
   analogWrite(RIGHT_POWER, rightAnalog);
-  
+
 }
 
 void updateTurnPID(float dtheta) {
@@ -240,15 +247,13 @@ void updateTurnPID(float dtheta) {
   int8_t outputSign = (output > 0) ? 1 : -1;
   setLeftMotorDirection(outputSign);
   setRightMotorDirection(-outputSign);
-  
+
   //Set the wheel powers, and scale and constrain them to the right range
   float leftAnalog = constrain(floatMap(fabs(output), 0, 1, 0, 255), 0, 255);
   float rightAnalog = constrain(floatMap(fabs(output), 0, 1, 0, 255), 0, 255);
 
-  Serial.println(leftAnalog);
-
   //if the same two values are being assigned over and over, then the robot doesnt need to turn anymore
-  if(leftAnalog == prevVal && leftAnalog < STOP_THRESHOLD) {
+  if (leftAnalog == prevVal && leftAnalog < STOP_THRESHOLD) {
     zeroCount++;
   }
   else {
@@ -256,7 +261,7 @@ void updateTurnPID(float dtheta) {
     prevVal = leftAnalog;
   }
 
-  if(zeroCount > 5) {
+  if (zeroCount > 5) {
     brake();
     zeroCount = 0;
   }
@@ -264,14 +269,14 @@ void updateTurnPID(float dtheta) {
     analogWrite(LEFT_POWER, leftAnalog);
     analogWrite(RIGHT_POWER, rightAnalog);
   }
-  
+
 }
 
 void TCC0_Handler() {
-  if(TCC0->INTFLAG.bit.OVF == 1) 
+  if (TCC0->INTFLAG.bit.OVF == 1)
   {
     TCC0->INTFLAG.bit.OVF = 1; // clear flag
-    
+
     float x = 0, y = 0, z = 0;
     getOrientation(&x, &y, &z);
     updatePID(x);

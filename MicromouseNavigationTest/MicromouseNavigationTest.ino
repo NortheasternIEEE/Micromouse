@@ -10,15 +10,27 @@ void setup() {
   sensorsInit();
   driveInit();
 
-  //getFrontDistance();
-  //delay(100);
+  //driveDistance(18, 0.525);
 
+  getFrontDistance();
+  delay(100);
+  /*
   turn(90);
   while(isTurning());
   
   turn(90);
   while(isTurning());
   digitalWrite(13, HIGH);
+  */
+
+  /*
+  for(int i=0; i<5; i++) {
+    //driveDistance(18, 0.525);
+  }
+  turn(-90);
+  while(isTurning());
+  driveDistance(18, 0.525);
+  */
 }
 
 void loop() {
@@ -26,7 +38,7 @@ void loop() {
   if(getFrontDistance() > 120)
   {
     digitalWrite(13, LOW);
-    driveDistance(18, 0.525);
+    driveDistance(17, 0.525);
     driveCorrect();
   }
   else
@@ -37,6 +49,9 @@ void loop() {
   
   delay(100);
   */
+
+  Serial.println(getLeftTicks());
+  delay(200);
   
 }
 

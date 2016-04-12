@@ -16,22 +16,30 @@
 #define RIGHT_MOTOR_1 5
 #define RIGHT_MOTOR_2 10
 
-#define LATERAL_ADJUSTMENT_COEFFICIENT 0.0004
+#define LATERAL_ADJUSTMENT_COEFFICIENT  0.3
+#define LATERAL_ADJUSTMENT_MIN          -15
+#define LATERAL_ADJUSTMENT_MAX          15
 
-#define DRIVE_KP        1
-#define DRIVE_KI        0.02
-#define DRIVE_KD        2
-#define DRIVE_MIN       -1
-#define DRIVE_MAX       1
+#define DRIVE_KP        0.001//1
+#define DRIVE_KI        0.03//0.02
+#define DRIVE_KD        0.025//2
+#define DRIVE_MIN       -0.65//-1
+#define DRIVE_MAX       0.65//1
 
-#define TURN_KP         0.0015  //0.0006
+#define TURN_KP         0.0025  //0.0006
 #define TURN_KI         0.525   //0.55
 #define TURN_KD         0.03 //0.0175
 #define TURN_MIN        -0.65
 #define TURN_MAX        0.65
 #define STOP_THRESHOLD  110
 
+#define DRIVE_CORRECT_KP  0.000075
+#define DRIVE_CORRECT_KI  0.525
+#define DRIVE_CORRECT_KD  0.015
+
 #define LR_COUNTS 4
+
+#define SKETCHY_ADJUSTMENT_FORMULA(x) 0.00299401*(17949-sqrt(3.2399*pow(10,8)-6.68*pow(10,6)*x))
 
 void driveInit(void);
 

@@ -55,22 +55,22 @@ void encodersInit(void);
 void encodersInit() {
   //Now, initialize encoders
   //Only use 1X decoding
-  pinMode(LEFT_ENCODER_A, INPUT);
-  pinMode(RIGHT_ENCODER_A, INPUT);
-  attachInterrupt(LEFT_ENCODER_A, ISR_leftEncoder_OUTA, RISING);
-  attachInterrupt(RIGHT_ENCODER_A, ISR_rightEncoder_OUTA, RISING);
+  pinMode(LEFT_ENCODER_CLK, OUTPUT);
+  pinMode(LEFT_ENCODER_MISO, INPUT);
 }
 
-//interrupt service request, called when leftEncoderOUTA_State goes High
-void ISR_leftEncoder_OUTA()
-{
-  leftTicks++;
-}
-
-//interrupt service request, called when rightEncoderOUTA_State goes High
-void ISR_rightEncoder_OUTA()
-{
-  rightTicks++;
+uint32_t getLeftTicks() {
+  uint32_t ticks = 0;
+  for(int i=0; i<32; i++) {
+    digitalWrite(LEFT_ENCODER_CLK, HIGH);
+    delay(1);
+    digitalWrite(LEFT_ENCODER_CLK, LOW);
+    delay(1);
+    if(digitalRead(LEFT_ENCODER_MISO)) {
+      ticks |= (1 << i);
+    }
+  }
+  return ticks;
 }
 
 //in cm

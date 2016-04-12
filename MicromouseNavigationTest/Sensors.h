@@ -12,8 +12,8 @@ void getOrientation(float*, float*, float*);
 
 //-------- ENCODERS --------//
 
-#define LEFT_ENCODER_A  12
-#define LEFT_ENCODER_B  24
+#define LEFT_ENCODER_CLK   12
+#define LEFT_ENCODER_MISO  24
 #define RIGHT_ENCODER_A 23
 #define RIGHT_ENCODER_B 22
 
@@ -34,6 +34,7 @@ void getOrientation(float*, float*, float*);
 
 float getPosition(void);
 void resetEncoders(void);
+uint32_t getLeftTicks(void);
 
 //-------- DISTANCE --------//
 
