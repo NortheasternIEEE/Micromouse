@@ -50,7 +50,9 @@ void loop() {
   delay(100);
   */
 
-  Serial.println(getLeftTicks());
+  Serial.print(getLeftEncoder());
+  Serial.print('\t');
+  Serial.println(getRightEncoder());
   delay(200);
   
 }

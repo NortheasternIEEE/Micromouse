@@ -57,9 +57,11 @@ void encodersInit() {
   //Only use 1X decoding
   pinMode(LEFT_ENCODER_CLK, OUTPUT);
   pinMode(LEFT_ENCODER_MISO, INPUT);
+  pinMode(RIGHT_ENCODER_CLK, OUTPUT);
+  pinMode(RIGHT_ENCODER_MISO, INPUT);
 }
 
-uint32_t getLeftTicks() {
+uint32_t getLeftEncoder() {
   uint32_t ticks = 0;
   for(int i=0; i<32; i++) {
     digitalWrite(LEFT_ENCODER_CLK, HIGH);
@@ -67,6 +69,20 @@ uint32_t getLeftTicks() {
     digitalWrite(LEFT_ENCODER_CLK, LOW);
     delay(1);
     if(digitalRead(LEFT_ENCODER_MISO)) {
+      ticks |= (1 << i);
+    }
+  }
+  return ticks;
+}
+
+uint32_t getRightEncoder() {
+  uint32_t ticks = 0;
+  for(int i=0; i<32; i++) {
+    digitalWrite(RIGHT_ENCODER_CLK, HIGH);
+    delay(1);
+    digitalWrite(RIGHT_ENCODER_CLK, LOW);
+    delay(1);
+    if(digitalRead(RIGHT_ENCODER_MISO)) {
       ticks |= (1 << i);
     }
   }

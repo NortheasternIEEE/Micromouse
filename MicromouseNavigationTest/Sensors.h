@@ -14,8 +14,8 @@ void getOrientation(float*, float*, float*);
 
 #define LEFT_ENCODER_CLK   12
 #define LEFT_ENCODER_MISO  24
-#define RIGHT_ENCODER_A 23
-#define RIGHT_ENCODER_B 22
+#define RIGHT_ENCODER_CLK  22
+#define RIGHT_ENCODER_MISO 23
 
 //distance betwen cells is 18 cm
 //REMEMBER to change back to 18 day of competition
@@ -34,7 +34,8 @@ void getOrientation(float*, float*, float*);
 
 float getPosition(void);
 void resetEncoders(void);
-uint32_t getLeftTicks(void);
+uint32_t getLeftEncoder(void);
+uint32_t getRightEncoder(void);
 
 //-------- DISTANCE --------//
 
