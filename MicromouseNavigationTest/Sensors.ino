@@ -83,7 +83,7 @@ uint32_t getRightEncoder() {
 
 //in cm
 float getPosition() {
-  return (((getLeftEncoder()+getRightEncoder())/2.0)/TICKS_IN_ONE_REVOLUTION) * WHEEL_CIRCUMFERENCE*2;
+  return (((getLeftEncoder()+getRightEncoder())/2.0)/TICKS_IN_ONE_REVOLUTION) * WHEEL_CIRCUMFERENCE;
 }
 
 //-------- DISTANCE SENSORS --------//

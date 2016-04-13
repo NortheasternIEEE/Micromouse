@@ -17,12 +17,12 @@
 #define RIGHT_MOTOR_2 10
 
 #define LATERAL_ADJUSTMENT_COEFFICIENT  0.3
-#define LATERAL_ADJUSTMENT_MIN          -15
-#define LATERAL_ADJUSTMENT_MAX          15
+#define LATERAL_ADJUSTMENT_MIN          -5
+#define LATERAL_ADJUSTMENT_MAX          5
 
 #define DRIVE_KP        0.001//1
-#define DRIVE_KI        0.03//0.02
-#define DRIVE_KD        0.025//2
+#define DRIVE_KI        0.04//0.02
+#define DRIVE_KD        0.075//2
 #define DRIVE_MIN       -0.65//-1
 #define DRIVE_MAX       0.65//1
 
@@ -33,9 +33,11 @@
 #define TURN_MAX        0.65
 #define STOP_THRESHOLD  110
 
-#define DRIVE_CORRECT_KP  0.000075
-#define DRIVE_CORRECT_KI  0.525
-#define DRIVE_CORRECT_KD  0.015
+#define DRIVE_CORRECT_KP  0.00007
+#define DRIVE_CORRECT_KI  0.46
+#define DRIVE_CORRECT_KD  0.0175
+#define DRIVE_CORRECT_MAX 0.75
+#define DRIVE_CORRECT_MIN -0.75
 
 #define LR_COUNTS 4
 

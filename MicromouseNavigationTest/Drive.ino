@@ -21,6 +21,9 @@ volatile int differenceAccumulator = 0;
 //so record the number of valid counts we've taken
 volatile uint8_t countsTaken = 0;
 
+//multiply this by our position to account for error
+volatile float positionMultiplier = 1;
+
 volatile pid_sat_t drive_pid;
 volatile pid_sat_t turn_pid;
 
@@ -120,6 +123,8 @@ void turnAbsolute(float angle) {
   pid_sat_reset((pid_sat_t*)&turn_pid);
   pid_sat_set_setpoint((pid_sat_t*)&turn_pid, 0);
   turning = 1;
+  //reset our linear drive error after a turn
+  positionMultiplier = 1;
 }
 
 uint8_t isTurning() {
@@ -138,17 +143,20 @@ void drive(float newSpeed) {
 }
 
 void driveDistance(float distance, float newSpeed) {
+  //take distance sensor measurements so we can learn from error in our movement
   drive(newSpeed);
-  float adjustedDistance = distance;//SKETCHY_ADJUSTMENT_FORMULA(distance);
   float initialPosition = getPosition();
-  while (getPosition() < initialPosition + adjustedDistance);
+  while (getPosition() < initialPosition + distance);
   digitalWrite(13, HIGH);
   hardBrake(newSpeed == 0.525 ? HARD_BRAKE_TIME_0525 : HARD_BRAKE_TIME_06);
-  //driveCorrect();
+  
+  //correct for angular error after a drive
+  driveCorrect();
+  
 }
 
 void driveCorrect() {
-  pid_sat_init((pid_sat_t*)&turn_pid, DRIVE_CORRECT_KP, DRIVE_CORRECT_KI, DRIVE_CORRECT_KD, TURN_MIN, TURN_MAX);
+  pid_sat_init((pid_sat_t*)&turn_pid, DRIVE_CORRECT_KP, DRIVE_CORRECT_KI, DRIVE_CORRECT_KD, DRIVE_CORRECT_MIN, DRIVE_CORRECT_MAX);
   pid_sat_reset((pid_sat_t*)&turn_pid);
   pid_sat_set_setpoint((pid_sat_t*)&turn_pid, 0);
   turning = 1;

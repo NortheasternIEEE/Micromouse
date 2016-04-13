@@ -10,7 +10,7 @@ void setup() {
   sensorsInit();
   driveInit();
 
-  driveDistance(18, 0.6);
+  //driveDistance(75, 0.525);
 
   getFrontDistance();
   delay(100);
@@ -34,22 +34,25 @@ void setup() {
 }
 
 void loop() {
-  /*
-  if(getFrontDistance() > 120)
+  
+  if(getFrontDistance() > 100)
   {
     digitalWrite(13, LOW);
-    driveDistance(17, 0.525);
+    driveDistance(16, 0.525);
     driveCorrect();
   }
   else
   {
     turn(-90);
     while(isTurning());
+    driveCorrect();
+    if(getBackDistance() < 20) {
+      driveDistance(1, 0.525);
+      driveCorrect();
+    }
   }
   
   delay(100);
-  */
-  
 }
 
 
