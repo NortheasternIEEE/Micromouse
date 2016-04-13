@@ -57,9 +57,9 @@ uint32_t getLeftEncoder() {
   uint32_t ticks = 0;
   for(int i=0; i<32; i++) {
     digitalWrite(LEFT_ENCODER_CLK, HIGH);
-    delay(1);
+    delayMicroseconds(100);
     digitalWrite(LEFT_ENCODER_CLK, LOW);
-    delay(1);
+    delayMicroseconds(100);
     if(digitalRead(LEFT_ENCODER_MISO)) {
       ticks |= (1 << i);
     }
@@ -71,9 +71,9 @@ uint32_t getRightEncoder() {
   uint32_t ticks = 0;
   for(int i=0; i<32; i++) {
     digitalWrite(RIGHT_ENCODER_CLK, HIGH);
-    delay(1);
+    delayMicroseconds(100);
     digitalWrite(RIGHT_ENCODER_CLK, LOW);
-    delay(1);
+    delayMicroseconds(100);
     if(digitalRead(RIGHT_ENCODER_MISO)) {
       ticks |= (1 << i);
     }
@@ -83,7 +83,7 @@ uint32_t getRightEncoder() {
 
 //in cm
 float getPosition() {
-  return (((getLeftEncoder()+getRightEncoder())/2.0)/TICKS_IN_ONE_REVOLUTION) * WHEEL_CIRCUMFERENCE;
+  return (((getLeftEncoder()+getRightEncoder())/2.0)/TICKS_IN_ONE_REVOLUTION) * WHEEL_CIRCUMFERENCE*2;
 }
 
 //-------- DISTANCE SENSORS --------//

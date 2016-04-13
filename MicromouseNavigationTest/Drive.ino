@@ -78,17 +78,12 @@ void brake() {
   digitalWrite(RIGHT_MOTOR_2, HIGH);
 }
 
-void hardBrake() {
+void hardBrake(uint8_t delayTime) {
   turning = 0;
   driving = 0;
-  setLeftMotorDirection(FORWARD);
-  setRightMotorDirection(FORWARD);
-  analogWrite(LEFT_POWER, 255);
-  analogWrite(RIGHT_POWER, 255);
-  delay(1);
   setLeftMotorDirection(BACKWARD);
   setRightMotorDirection(BACKWARD);
-  delay(1);
+  delay(delayTime);
   analogWrite(LEFT_POWER, 0);
   analogWrite(RIGHT_POWER, 0);
 }
@@ -143,14 +138,13 @@ void drive(float newSpeed) {
 }
 
 void driveDistance(float distance, float newSpeed) {
-  resetEncoders();
   drive(newSpeed);
-  //apply the sketchy encoder adjustment formula
   float adjustedDistance = distance;//SKETCHY_ADJUSTMENT_FORMULA(distance);
   float initialPosition = getPosition();
   while (getPosition() < initialPosition + adjustedDistance);
-  brake();
-  driveCorrect();
+  digitalWrite(13, HIGH);
+  hardBrake(newSpeed == 0.525 ? HARD_BRAKE_TIME_0525 : HARD_BRAKE_TIME_06);
+  //driveCorrect();
 }
 
 void driveCorrect() {
@@ -193,14 +187,12 @@ void updateDrivePID(float dtheta) {
     uint8_t left = getLeftDistance();
     uint8_t right = getRightDistance();
     if (fabs(left - right) < 120) {
-
       differenceAccumulator += right - left;
       countsTaken++;
     }
   }
 
   if (countsTaken >= LR_COUNTS) {
-    digitalWrite(13, HIGH);
     //calculate some adjustment based on distance sensors
     float difference = ((float)differenceAccumulator) / ((float)countsTaken);
     differenceAccumulator = 0;
@@ -214,8 +206,6 @@ void updateDrivePID(float dtheta) {
   }
   // generate our PID controller output
   float output = pid_sat_update((pid_sat_t*)&drive_pid, dtheta);
-
-  Serial.println(output);
 
   //Now, calculate the left and right wheel powers
   float leftPower = 0, rightPower = 0;

@@ -10,7 +10,7 @@ void setup() {
   sensorsInit();
   driveInit();
 
-  driveDistance(18, 0.525);
+  driveDistance(18, 0.6);
 
   getFrontDistance();
   delay(100);

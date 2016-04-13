@@ -44,7 +44,10 @@
 void driveInit(void);
 
 void brake(void);
-void hardBrake(void);
+void hardBrake(uint8_t);
+
+#define HARD_BRAKE_TIME_06    75
+#define HARD_BRAKE_TIME_0525  60
 
 //Turns the robot relative to its current angle
 void turn(float);
