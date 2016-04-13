@@ -10,7 +10,7 @@ void setup() {
   sensorsInit();
   driveInit();
 
-  //driveDistance(18, 0.525);
+  driveDistance(18, 0.525);
 
   getFrontDistance();
   delay(100);
@@ -49,11 +49,6 @@ void loop() {
   
   delay(100);
   */
-
-  Serial.print(getLeftEncoder());
-  Serial.print('\t');
-  Serial.println(getRightEncoder());
-  delay(200);
   
 }
 

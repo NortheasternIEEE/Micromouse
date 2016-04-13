@@ -42,14 +42,6 @@ void getOrientation(float* x, float* y, float* z) {
 
 
 //-------- ENCODERS --------//
-
-volatile uint32_t leftTicks = 0;
-volatile uint32_t rightTicks = 0;
-volatile float encoderPosition = 0;
-
-void ISR_leftEncoder_OUTA(void);
-void ISR_rightEncoder_OUTA(void);
-
 void encodersInit(void);
 
 void encodersInit() {
@@ -91,13 +83,7 @@ uint32_t getRightEncoder() {
 
 //in cm
 float getPosition() {
-  return (((leftTicks+rightTicks)/2.0)/TICKS_IN_ONE_REVOLUTION) * WHEEL_CIRCUMFERENCE;
-}
-
-void resetEncoders() {
-  leftTicks = 0;
-  rightTicks = 0;
-  encoderPosition = 0;
+  return (((getLeftEncoder()+getRightEncoder())/2.0)/TICKS_IN_ONE_REVOLUTION) * WHEEL_CIRCUMFERENCE;
 }
 
 //-------- DISTANCE SENSORS --------//

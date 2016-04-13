@@ -146,7 +146,7 @@ void driveDistance(float distance, float newSpeed) {
   resetEncoders();
   drive(newSpeed);
   //apply the sketchy encoder adjustment formula
-  float adjustedDistance = SKETCHY_ADJUSTMENT_FORMULA(distance);
+  float adjustedDistance = distance;//SKETCHY_ADJUSTMENT_FORMULA(distance);
   float initialPosition = getPosition();
   while (getPosition() < initialPosition + adjustedDistance);
   brake();
