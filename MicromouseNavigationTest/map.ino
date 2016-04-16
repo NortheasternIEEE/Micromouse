@@ -100,16 +100,16 @@ void visit(node *n) {
     float right = getRightDistance();
     if(right < 100 && right > 10) {
         if (x > 80 || x < 100) {
-          n->up = false;
-        }
-        else if (x > 170 || x < 190) {
-          n->right = false;
-        }
-        else if (x > 260 || x < 280) {
           n->down = false;
         }
-        else if (x > 350 || x < 10) {
+        else if (x > 170 || x < 190) {
           n->left = false;
+        }
+        else if (x > 260 || x < 280) {
+          n->up = false;
+        }
+        else if (x > 350 || x < 10) {
+          n->right = false;
         }
     }
     float front = 0;
@@ -120,16 +120,16 @@ void visit(node *n) {
     front /= 5;
     if(getBudged() || front <= TURN_BEGIN_THRESHOLD) {
         if (x > 80 || x < 100) {
-          n->up = false;
-        }
-        else if (x > 170 || x < 190) {
           n->right = false;
         }
-        else if (x > 260 || x < 280) {
+        else if (x > 170 || x < 190) {
           n->down = false;
         }
-        else if (x > 350 || x < 10) {
+        else if (x > 260 || x < 280) {
           n->left = false;
+        }
+        else if (x > 350 || x < 10) {
+          n->up = false;
         }
     }
 }
