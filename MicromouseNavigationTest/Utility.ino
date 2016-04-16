@@ -78,7 +78,7 @@ void moveRobot(location *p, direction d) {
             break;
         case UP:
             // MOVE THE MOUSE UP
-            // UPDATE ITS POSITION
+            // UPDATE ITS POSITIONw
             p->y = p->y + 1;
             if(getFrontDistance() <= TURN_BEGIN_THRESHOLD) {
               budge();

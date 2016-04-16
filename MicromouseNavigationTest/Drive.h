@@ -41,7 +41,7 @@
 #define DRIVE_CORRECT_MIN -0.575
 
 #define DISTANCE_STOP_THRESHOLD 55 //make it a little bigger than the budge stop threshold to account for moving at high speeds
-#define BUDGE_STOP_THRESHOLD    40
+#define BUDGE_STOP_THRESHOLD    42.5
 #define TURN_BEGIN_THRESHOLD    110
 #define DRIVE_LOOP_DELAY        70
 
@@ -56,7 +56,7 @@ void driveInit(void);
 void brake(void);
 void hardBrake(uint8_t);
 
-#define HARD_BRAKE_TIME_06    75
+#define HARD_BRAKE_TIME_06    50
 #define HARD_BRAKE_TIME_0525  75
 
 //Turns the robot relative to its current angle
