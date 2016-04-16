@@ -22,6 +22,7 @@ void map(location *position, node param[mazeSize][mazeSize]) {
     // Get all the possible ways the mouse can move from this cell
     getSuccessors(param[x][y], options);
     getSuccessors1(param, param[x][y], options, x, y);
+    Serial.println("Made it past get successors");
     for (int i = 0; i < 4; i++) {
          // Move the mouse that direction and update its location
          if (canMove(position, options[i], param)) {
