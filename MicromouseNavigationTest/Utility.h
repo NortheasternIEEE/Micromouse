@@ -1,16 +1,13 @@
-//
-//  Utility.h
-//  MicroMouse
-//
-//  Created by Matthew Murphy on 2/10/16.
-//  Copyright © 2016 Northeastern-IEEE. All rights reserved.
-//
+#ifndef UTILITY_H_
+#define UTILITY_H_
 
-#ifndef Utility_h
-#define Utility_h
+#include "Arduino.h"
 
-#include <stdio.h>
-#include <stdbool.h>
+#define signum(x) ((x >= 0) ? 1 : -1)
+
+void configureTimer(Tcc*, IRQn_Type, uint16_t);
+float floatMap(float, float, float, float, float);
+
 /*
  * Used to define the size of the maze. Change this value and it will change the maze size for the entire 
  * project. Only define the mazeSize here and no where else.
@@ -86,5 +83,6 @@ void initializeLoc(location *spot);
 direction reverse(direction d);
 void clearMapped(node param[mazeSize][mazeSize]);
 
+#endif
 
-#endif /* Utility_h */
+

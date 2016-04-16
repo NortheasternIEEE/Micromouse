@@ -38,8 +38,6 @@ typedef struct node {
     bool up;
     bool down;
     bool mapped;
-    int x;
-    int y;
     direction parent;
 } node;
 
@@ -88,3 +86,4 @@ void clearMapped(node param[mazeSize][mazeSize]);
 
 
 #endif /* Utility_h */
+

@@ -9,20 +9,23 @@
 #include "path.h"
 
 
-void findPath(node graph[mazeSize][mazeSize], location *start, location end, Link *bestPath,
+void findPath(node graph[mazeSize][mazeSize], location *start, location end[4], Link *bestPath,
               bWrap *finished) {
     // If you have already been to this node return  
-    if (graph[start->x][start->y].maped == true) {
+    if (graph[start->x][start->y].mapped == true) {
         return;
     }
     // If you are at the end generate the path
-    if ((start->x == end.x) && (start->y == end.y)) {
+    if (((start->x == end[0].x) && (start->y == end[0].y)) ||
+        ((start->x == end[1].x) && (start->y == end[1].y)) ||
+        ((start->x == end[2].x) && (start->y == end[2].y)) ||
+        ((start->x == end[3].x) && (start->y == end[3].y))) {
         dealWithPath(graph, start, bestPath);
         finished->value = true;
         return;
     }
-    // Set the nodes maped value to true
-    graph[start->x][start->y].maped = true;
+    // Set the nodes mapped value to true
+    graph[start->x][start->y].mapped = true;
     direction options[4];
     // Get where you can go from this node
     getSuccessors(graph[start->x][start->y], options);

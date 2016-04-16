@@ -9,8 +9,8 @@
 #ifndef map_h
 #define map_h
 
-#include <stdio.h>
 #include "Utility.h"
+#include "Drive.h"
 
 /*
  * Updates an array of length 4 with the four possible ways the mouse can travel.
@@ -33,3 +33,4 @@ void getSuccessors1(node param[mazeSize][mazeSize], node v, direction array[4], 
 bool canMove(location *p, direction d, node param[mazeSize][mazeSize]);
 
 #endif /* map_h */
+

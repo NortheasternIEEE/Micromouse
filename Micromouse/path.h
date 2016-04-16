@@ -20,7 +20,7 @@ typedef struct boolWrap {
 }bWrap;
 
 void findPath(node graph[mazeSize][mazeSize], location *start,
-               location end, Link *bestPath, bWrap *finsihed);
+               location end[4], Link *bestPath, bWrap *finsihed);
 
 void dealWithPath(node graph[mazeSize][mazeSize], location *start, Link *best);
 void updateLoc(location *pos, direction d);

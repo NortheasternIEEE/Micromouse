@@ -10,9 +10,9 @@
 #include "Arduino.h"
 
 
-void map(location *position, node param[mazeSize][mazeSize]) {
-    int x = position->x;
-    int y = position->y;
+void map(location *movePosition, node param[mazeSize][mazeSize]) {
+    int x = movePosition->x;
+    int y = movePosition->y;
     // If you have already been to this node return
     if (param[x][y].mapped) {return;}
     //printf("X = %d, Y = %d\n",x, y);
@@ -20,22 +20,18 @@ void map(location *position, node param[mazeSize][mazeSize]) {
     // Visit the node to get all the relevant information you need
     visit(&param[x][y]);
     // Get all the possible ways the mouse can move from this cell
-    // getSuccessors(param[x][y], options);
-    // getSuccessors1(param, param[x][y], options, x, y);
-    // for (int i = 0; i < 4; i++) {
-    //     // Move the mouse that direction and update its location
-    //     if (canMove(position, options[i], param)) {
-    //         moveRobot(position, options[i]);
-    //         printf("Moved to: ");
-    //         printf("X = %d, Y = %d\n",position->x, position->y);
-    //         // Map the maze starting from that new location
-    //         map(position, param); // COME OUT HERE
-    //         // GO BACK - Not implemented yet
-    //         moveRobot(position, reverse(options[i]));
-    //     }
-    //     printf("Go back to: ");
-    //     printf("X = %d, Y = %d\n",position->x, position->y);
-    // }
+    getSuccessors(param[x][y], options);
+    getSuccessors1(param, param[x][y], options, x, y);
+    Serial.println("Made it past get successors");
+    for (int i = 0; i < 4; i++) {
+         // Move the mouse that direction and update its location
+         if (canMove(movePosition, options[i], param)) {
+             Serial.println("We can move here");
+             moveRobot(movePosition, options[i]);
+             map(movePosition, param); // COME OUT HERE
+             moveRobot(movePosition, reverse(options[i]));
+         }
+     }
 }
 
 
@@ -83,17 +79,38 @@ bool canMove(location *p, direction d, node param[mazeSize][mazeSize]) {
 
 void visit(node *n) {
     n->mapped = true;
-    
+
+    float x = getTargetAngle();
     // FIGURE OUT ALL THE SENOR SHIT
     float left = getLeftDistance();
     if(left < 100 && left > 10) {
-        n->left = false;
-        Serial.print('false');
+        if (x > 80 || x < 100) {
+          n->up = false;
+        }
+        else if (x > 170 || x < 190) {
+          n->right = false;
+        }
+        else if (x > 260 || x < 280) {
+          n->down = false;
+        }
+        else if (x > 350 || x < 10) {
+          n->left = false;
+        }
     }
     float right = getRightDistance();
     if(right < 100 && right > 10) {
-        n->right = false;
-        Serial.print('false');
+        if (x > 80 || x < 100) {
+          n->down = false;
+        }
+        else if (x > 170 || x < 190) {
+          n->left = false;
+        }
+        else if (x > 260 || x < 280) {
+          n->up = false;
+        }
+        else if (x > 350 || x < 10) {
+          n->right = false;
+        }
     }
     float front = 0;
     for(int i=0; i<5; i++) {
@@ -101,9 +118,19 @@ void visit(node *n) {
         delay(100);
     }
     front /= 5;
-    if(front <= TURN_BEGIN_THRESHOLD) {
-        n->front = false;
-        Serial.print('false');
+    if(getBudged() || front <= TURN_BEGIN_THRESHOLD) {
+        if (x > 80 || x < 100) {
+          n->right = false;
+        }
+        else if (x > 170 || x < 190) {
+          n->down = false;
+        }
+        else if (x > 260 || x < 280) {
+          n->left = false;
+        }
+        else if (x > 350 || x < 10) {
+          n->up = false;
+        }
     }
 }
 
