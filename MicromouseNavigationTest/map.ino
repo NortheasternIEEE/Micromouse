@@ -26,17 +26,11 @@ void map(location *position, node param[mazeSize][mazeSize]) {
     for (int i = 0; i < 4; i++) {
          // Move the mouse that direction and update its location
          if (canMove(position, options[i], param)) {
-                Serial.println("We can move here");
+             Serial.println("We can move here");
              moveRobot(position, options[i]);
-    //         printf("Moved to: ");
-    //         printf("X = %d, Y = %d\n",position->x, position->y);
-    //         // Map the maze starting from that new location
-    //         map(position, param); // COME OUT HERE
-    //         // GO BACK - Not implemented yet
-    //         moveRobot(position, reverse(options[i]));
+             map(position, param); // COME OUT HERE
+             moveRobot(position, reverse(options[i]));
          }
-    //     printf("Go back to: ");
-    //     printf("X = %d, Y = %d\n",position->x, position->y);
      }
 }
 
@@ -85,38 +79,37 @@ bool canMove(location *p, direction d, node param[mazeSize][mazeSize]) {
 
 void visit(node *n) {
     n->mapped = true;
-    sensors_event_t event;
-    bno.getEvent(&event);
-    
+
+    float x = getTargetAngle();
     // FIGURE OUT ALL THE SENOR SHIT
     float left = getLeftDistance();
     if(left < 100 && left > 10) {
-        if (x > 80 || < 100) {
+        if (x > 80 || x < 100) {
           n->up = false;
         }
         else if (x > 170 || x < 190) {
-          x->right = false;
+          n->right = false;
         }
         else if (x > 260 || x < 280) {
-          x->down = false;
+          n->down = false;
         }
         else if (x > 350 || x < 10) {
-          x->left = false;
+          n->left = false;
         }
     }
     float right = getRightDistance();
     if(right < 100 && right > 10) {
-        if (x > 80 || < 100) {
+        if (x > 80 || x < 100) {
           n->up = false;
         }
         else if (x > 170 || x < 190) {
-          x->right = false;
+          n->right = false;
         }
         else if (x > 260 || x < 280) {
-          x->down = false;
+          n->down = false;
         }
         else if (x > 350 || x < 10) {
-          x->left = false;
+          n->left = false;
         }
     }
     float front = 0;
@@ -126,17 +119,17 @@ void visit(node *n) {
     }
     front /= 5;
     if(front <= TURN_BEGIN_THRESHOLD) {
-        if (x > 80 || < 100) {
+        if (x > 80 || x < 100) {
           n->up = false;
         }
         else if (x > 170 || x < 190) {
-          x->right = false;
+          n->right = false;
         }
         else if (x > 260 || x < 280) {
-          x->down = false;
+          n->down = false;
         }
         else if (x > 350 || x < 10) {
-          x->left = false;
+          n->left = false;
         }
     }
 }
