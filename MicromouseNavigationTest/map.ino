@@ -20,11 +20,12 @@ void map(location *position, node param[mazeSize][mazeSize]) {
     // Visit the node to get all the relevant information you need
     visit(&param[x][y]);
     // Get all the possible ways the mouse can move from this cell
-    // getSuccessors(param[x][y], options);
-    // getSuccessors1(param, param[x][y], options, x, y);
-    // for (int i = 0; i < 4; i++) {
-    //     // Move the mouse that direction and update its location
-    //     if (canMove(position, options[i], param)) {
+    getSuccessors(param[x][y], options);
+    getSuccessors1(param, param[x][y], options, x, y);
+    for (int i = 0; i < 4; i++) {
+         // Move the mouse that direction and update its location
+         if (canMove(position, options[i], param)) {
+                Serial.println("We can move here");
     //         moveRobot(position, options[i]);
     //         printf("Moved to: ");
     //         printf("X = %d, Y = %d\n",position->x, position->y);
@@ -32,10 +33,10 @@ void map(location *position, node param[mazeSize][mazeSize]) {
     //         map(position, param); // COME OUT HERE
     //         // GO BACK - Not implemented yet
     //         moveRobot(position, reverse(options[i]));
-    //     }
+         }
     //     printf("Go back to: ");
     //     printf("X = %d, Y = %d\n",position->x, position->y);
-    // }
+     }
 }
 
 
