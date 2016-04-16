@@ -192,18 +192,16 @@ void driveDistance(float distance, float newSpeed) {
 
 void budge() {
   delay(100);
-  uint8_t doAnExtraBudge = 0;
-  while(getFrontDistance() > BUDGE_STOP_THRESHOLD) {
+  float pos;
+  while((pos = getFrontDistance()) > BUDGE_STOP_THRESHOLD) {
+    Serial.println(pos);
     setLeftMotorDirection(FORWARD);
     setRightMotorDirection(FORWARD);
-    driveDistance(0.75, 0.575);
-    doAnExtraBudge = 1;
+    driveDistance(0.75, 0.55);
   }
-  if(doAnExtraBudge) {
-    setLeftMotorDirection(FORWARD);
-    setRightMotorDirection(FORWARD);
-    driveDistance(1, 0.575);
-  }
+  setLeftMotorDirection(FORWARD);
+  setRightMotorDirection(FORWARD);
+  driveDistance(0.75, 0.55);
   budged = 1;
 }
 
