@@ -62,7 +62,7 @@ void loop() {
     while(getFrontDistance() > BUDGE_STOP_THRESHOLD) {
       setLeftMotorDirection(FORWARD);
       setRightMotorDirection(FORWARD);
-      driveDistance(1, 0.575);
+      driveDistance(0.75, 0.575);
       doAnExtraBudge = 1;
     }
     if(doAnExtraBudge) {
