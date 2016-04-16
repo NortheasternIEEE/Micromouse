@@ -85,17 +85,39 @@ bool canMove(location *p, direction d, node param[mazeSize][mazeSize]) {
 
 void visit(node *n) {
     n->mapped = true;
+    sensors_event_t event;
+    bno.getEvent(&event);
     
     // FIGURE OUT ALL THE SENOR SHIT
     float left = getLeftDistance();
     if(left < 100 && left > 10) {
-        n->left = false;
-        Serial.println("not left");
+        if (x > 80 || < 100) {
+          n->up = false;
+        }
+        else if (x > 170 || x < 190) {
+          x->right = false;
+        }
+        else if (x > 260 || x < 280) {
+          x->down = false;
+        }
+        else if (x > 350 || x < 10) {
+          x->left = false;
+        }
     }
     float right = getRightDistance();
     if(right < 100 && right > 10) {
-        n->right = false;
-        Serial.println("not left");
+        if (x > 80 || < 100) {
+          n->up = false;
+        }
+        else if (x > 170 || x < 190) {
+          x->right = false;
+        }
+        else if (x > 260 || x < 280) {
+          x->down = false;
+        }
+        else if (x > 350 || x < 10) {
+          x->left = false;
+        }
     }
     float front = 0;
     for(int i=0; i<5; i++) {
@@ -104,8 +126,18 @@ void visit(node *n) {
     }
     front /= 5;
     if(front <= TURN_BEGIN_THRESHOLD) {
-        n->up = false;
-        Serial.println("not front");
+        if (x > 80 || < 100) {
+          n->up = false;
+        }
+        else if (x > 170 || x < 190) {
+          x->right = false;
+        }
+        else if (x > 260 || x < 280) {
+          x->down = false;
+        }
+        else if (x > 350 || x < 10) {
+          x->left = false;
+        }
     }
 }
 
