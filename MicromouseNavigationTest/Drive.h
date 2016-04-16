@@ -23,7 +23,7 @@
 #define DRIVE_MAX       0.65//1
 
 #define TURN_KP         0.0007//0.0007  //0.0006
-#define TURN_KI         0.65   //0.55
+#define TURN_KI         0.625   //0.55
 #define TURN_KD         0.02 //0.0175
 #define TURN_MIN        -0.65
 #define TURN_MAX        0.65
