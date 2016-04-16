@@ -14,8 +14,6 @@ void setup() {
   pinMode(13, OUTPUT);
   digitalWrite(13, LOW);
 
-  delay(10000);
-
   sensorsInit();
   driveInit();
 
@@ -31,7 +29,8 @@ void setup() {
 
   getFrontDistance();
   delay(100);
-  /*
+
+/*
   turn(90);
   while(isTurning());
   

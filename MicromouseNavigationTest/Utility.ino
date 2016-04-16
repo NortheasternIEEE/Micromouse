@@ -41,8 +41,11 @@ void moveRobot(location *p, direction d) {
             // MOVE THE MOUSE RIGHT
             // UPDATE ITS POSITION
             p->x = p->x + 1;
-            budge();
+            if(getFrontDistance() <= TURN_BEGIN_THRESHOLD) {
+              budge();
+            }
             turnAbsolute(90);
+            while(isTurning());
             setLeftMotorDirection(FORWARD);
             setRightMotorDirection(FORWARD);
             driveDistance(15.25, 0.565); //0.575 was changed -Charlie
@@ -51,8 +54,11 @@ void moveRobot(location *p, direction d) {
             // MOVE THE MOUSE LEFT
             // UPDATE ITS POSITION
             p->x = p->x - 1;
-            budge();
+            if(getFrontDistance() <= TURN_BEGIN_THRESHOLD) {
+              budge();
+            }
             turnAbsolute(270);
+            while(isTurning());
             setLeftMotorDirection(FORWARD);
             setRightMotorDirection(FORWARD);
             driveDistance(15.25, 0.565); //0.575 was changed -Charlie
@@ -61,8 +67,11 @@ void moveRobot(location *p, direction d) {
             // MOVE THE MOUSE DOWN
             // UPDATE ITS POSITION
             p->y = p->y - 1;
-            budge();
+            if(getFrontDistance() <= TURN_BEGIN_THRESHOLD) {
+              budge();
+            }
             turnAbsolute(180);
+            while(isTurning());
             setLeftMotorDirection(FORWARD);
             setRightMotorDirection(FORWARD);
             driveDistance(15.25, 0.565); //0.575 was changed -Charlie
@@ -71,8 +80,11 @@ void moveRobot(location *p, direction d) {
             // MOVE THE MOUSE UP
             // UPDATE ITS POSITION
             p->y = p->y + 1;
-            budge();
+            if(getFrontDistance() <= TURN_BEGIN_THRESHOLD) {
+              budge();
+            }
             turnAbsolute(0);
+            while(isTurning());
             setLeftMotorDirection(FORWARD);
             setRightMotorDirection(FORWARD);
             driveDistance(15.25, 0.565); //0.575 was changed -Charlie

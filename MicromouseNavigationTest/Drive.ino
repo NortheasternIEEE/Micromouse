@@ -25,6 +25,8 @@ volatile uint8_t countsTaken = 0;
 //multiply this by our position to account for error
 volatile float positionMultiplier = 1;
 
+volatile uint8_t budged = 0;
+
 volatile pid_sat_t drive_pid;
 volatile pid_sat_t turn_pid;
 volatile pid_sat_t lateral_pid;
@@ -123,6 +125,7 @@ void turn(float angle) {
 }
 
 void turnAbsolute(float angle) {
+  budged = 0;
   targetAngle = angle;
   pid_sat_reset((pid_sat_t*)&turn_pid);
   pid_sat_set_setpoint((pid_sat_t*)&turn_pid, 0);
@@ -201,6 +204,11 @@ void budge() {
     setRightMotorDirection(FORWARD);
     driveDistance(1, 0.575);
   }
+  budged = 1;
+}
+
+uint8_t getBudged() {
+  return budged;
 }
 
 void driveCorrect() {

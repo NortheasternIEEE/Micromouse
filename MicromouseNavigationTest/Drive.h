@@ -18,7 +18,7 @@
 
 #define DRIVE_KP        0.0005//0.001//1
 #define DRIVE_KI        0.04//0.02
-#define DRIVE_KD        0.05//0.075//2
+#define DRIVE_KD        0.1//0.075//2
 #define DRIVE_MIN       -0.65//-1
 #define DRIVE_MAX       0.65//1
 

@@ -10,9 +10,9 @@
 #include "Arduino.h"
 
 
-void map(location *position, node param[mazeSize][mazeSize]) {
-    int x = position->x;
-    int y = position->y;
+void map(location *movePosition, node param[mazeSize][mazeSize]) {
+    int x = movePosition->x;
+    int y = movePosition->y;
     // If you have already been to this node return
     if (param[x][y].mapped) {return;}
     //printf("X = %d, Y = %d\n",x, y);
@@ -25,11 +25,11 @@ void map(location *position, node param[mazeSize][mazeSize]) {
     Serial.println("Made it past get successors");
     for (int i = 0; i < 4; i++) {
          // Move the mouse that direction and update its location
-         if (canMove(position, options[i], param)) {
+         if (canMove(movePosition, options[i], param)) {
              Serial.println("We can move here");
-             moveRobot(position, options[i]);
-             map(position, param); // COME OUT HERE
-             moveRobot(position, reverse(options[i]));
+             moveRobot(movePosition, options[i]);
+             map(movePosition, param); // COME OUT HERE
+             moveRobot(movePosition, reverse(options[i]));
          }
      }
 }
@@ -118,7 +118,7 @@ void visit(node *n) {
         delay(100);
     }
     front /= 5;
-    if(front <= TURN_BEGIN_THRESHOLD) {
+    if(getBudged() || front <= TURN_BEGIN_THRESHOLD) {
         if (x > 80 || x < 100) {
           n->up = false;
         }
