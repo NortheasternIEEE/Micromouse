@@ -7,6 +7,7 @@
 //
 
 #include "map.h"
+#include "Arduino.h"
 
 
 void map(location *position, node param[mazeSize][mazeSize]) {
@@ -19,22 +20,22 @@ void map(location *position, node param[mazeSize][mazeSize]) {
     // Visit the node to get all the relevant information you need
     visit(&param[x][y]);
     // Get all the possible ways the mouse can move from this cell
-    //getSuccessors(param[x][y], options);
-    getSuccessors1(param, param[x][y], options, x, y);
-    for (int i = 0; i < 4; i++) {
-        // Move the mouse that direction and update its location
-        if (canMove(position, options[i], param)) {
-            moveRobot(position, options[i]);
-            printf("Moved to: ");
-            printf("X = %d, Y = %d\n",position->x, position->y);
-            // Map the maze starting from that new location
-            map(position, param); // COME OUT HERE
-            // GO BACK - Not implemented yet
-            moveRobot(position, reverse(options[i]));
-        }
-        printf("Go back to: ");
-        printf("X = %d, Y = %d\n",position->x, position->y);
-    }
+    // getSuccessors(param[x][y], options);
+    // getSuccessors1(param, param[x][y], options, x, y);
+    // for (int i = 0; i < 4; i++) {
+    //     // Move the mouse that direction and update its location
+    //     if (canMove(position, options[i], param)) {
+    //         moveRobot(position, options[i]);
+    //         printf("Moved to: ");
+    //         printf("X = %d, Y = %d\n",position->x, position->y);
+    //         // Map the maze starting from that new location
+    //         map(position, param); // COME OUT HERE
+    //         // GO BACK - Not implemented yet
+    //         moveRobot(position, reverse(options[i]));
+    //     }
+    //     printf("Go back to: ");
+    //     printf("X = %d, Y = %d\n",position->x, position->y);
+    // }
 }
 
 
@@ -84,6 +85,26 @@ void visit(node *n) {
     n->mapped = true;
     
     // FIGURE OUT ALL THE SENOR SHIT
+    float left = getLeftDistance();
+    if(left < 100 && left > 10) {
+        n->left = false;
+        Serial.print('false');
+    }
+    float right = getRightDistance();
+    if(right < 100 && right > 10) {
+        n->right = false;
+        Serial.print('false');
+    }
+    float front = 0;
+    for(int i=0; i<5; i++) {
+        front += getFrontDistance();
+        delay(100);
+    }
+    front /= 5;
+    if(front <= TURN_BEGIN_THRESHOLD) {
+        n->front = false;
+        Serial.print('false');
+    }
 }
 
 void getSuccessors(node v, direction array[4]) {
