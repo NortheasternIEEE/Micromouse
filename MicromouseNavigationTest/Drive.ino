@@ -9,6 +9,7 @@ volatile uint8_t driving = 0;
 volatile uint8_t turning = 0;
 volatile float driveSpeed = 0; //the y speed for driving
 volatile float targetAngle = 0; //the last angle that we set the bot to
+volatile float currentYaw = 0;
 
 //Track the number of times we've called the drive PID so that we know
 //when to adjust our drive based on side measurements
@@ -26,6 +27,7 @@ volatile float positionMultiplier = 1;
 
 volatile pid_sat_t drive_pid;
 volatile pid_sat_t turn_pid;
+volatile pid_sat_t lateral_pid;
 
 void setLeftMotorDirection(int8_t);
 void setRightMotorDirection(int8_t);
@@ -44,6 +46,8 @@ void driveInit() {
 
   pid_sat_init((pid_sat_t*)&drive_pid, DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_MIN, DRIVE_MAX); //set gains and limits
   pid_sat_init((pid_sat_t*)&turn_pid, TURN_KP, TURN_KI, TURN_KD, TURN_MIN, TURN_MAX);
+  pid_sat_init((pid_sat_t*)&lateral_pid, LATERAL_ADJUSTMENT_KP, LATERAL_ADJUSTMENT_KI, LATERAL_ADJUSTMENT_KD, LATERAL_ADJUSTMENT_MIN, LATERAL_ADJUSTMENT_MAX);
+  pid_sat_set_setpoint((pid_sat_t*)&lateral_pid, 0); //our setpoint is zero because we want to have zero difference between our side sensors
 
   configureTimer(TCC0, TCC0_IRQn, (1875 * 5) - 1); //configure to execute every 30ms
 }
@@ -136,6 +140,7 @@ void drive(float newSpeed) {
   distanceUpdateCounter = 0;
   differenceAccumulator = 0;
   countsTaken = 0;
+  pid_sat_reset((pid_sat_t*)&lateral_pid);
   pid_sat_reset((pid_sat_t*)&drive_pid);
   pid_sat_set_setpoint((pid_sat_t*)&drive_pid, 0);
   driveSpeed = newSpeed;
@@ -145,13 +150,36 @@ void drive(float newSpeed) {
 void driveDistance(float distance, float newSpeed) {
   //take distance sensor measurements so we can learn from error in our movement
   drive(newSpeed);
-  float initialPosition = getPosition();
-  while (getPosition() < initialPosition + distance);
-  digitalWrite(13, HIGH);
+  float previousPosition = getPosition();
+  float forwardDistanceTravelled = 0; //the amount we've travelled in our desired direction
+  while (forwardDistanceTravelled < distance) {
+    delay(DRIVE_LOOP_DELAY);
+    //first, check to see if there's a wall in front of us
+    if(forwardDistanceTravelled > distance/2.5 && getFrontDistance() < DISTANCE_STOP_THRESHOLD) {
+      digitalWrite(13, HIGH);
+      break;
+    }
+    float currentPosition = getPosition();
+    float distanceTravelled = currentPosition-previousPosition;
+    //calculate the change in angle
+    float dtheta = 0;
+    if (fabs(targetAngle - currentYaw) > 180) {
+      dtheta = (360 - fabs(targetAngle - currentYaw)) * signum(currentYaw - targetAngle);
+    }
+    else {
+      dtheta = targetAngle - currentYaw;
+    }
+
+    //and add to our travel in the desired direction
+    forwardDistanceTravelled += distanceTravelled*cos(fabs(dtheta)*3.14159/180);
+    previousPosition = currentPosition;
+  }
   hardBrake(newSpeed == 0.525 ? HARD_BRAKE_TIME_0525 : HARD_BRAKE_TIME_06);
   
   //correct for angular error after a drive
   driveCorrect();
+
+  //now, check for the case where the encoders stopped us before we got close enough to the wall
   
 }
 
@@ -180,7 +208,6 @@ void updatePID(float yaw) {
   else {
     dtheta = targetAngle - yaw;
   }
-  //Serial.println(dtheta);
   
   if (turning) {
     updateTurnPID(dtheta);
@@ -205,8 +232,9 @@ void updateDrivePID(float dtheta) {
     float difference = ((float)differenceAccumulator) / ((float)countsTaken);
     differenceAccumulator = 0;
     countsTaken = 0;
-    float newSetpoint = -constrain(difference * LATERAL_ADJUSTMENT_COEFFICIENT, LATERAL_ADJUSTMENT_MIN, LATERAL_ADJUSTMENT_MAX);
-    pid_sat_set_setpoint((pid_sat_t*)&drive_pid, newSetpoint);
+    //update our lateral adjustment PID
+    float lateralAdjustment = -pid_sat_update((pid_sat_t*)&lateral_pid, difference);
+    pid_sat_set_setpoint((pid_sat_t*)&drive_pid, lateralAdjustment);
     distanceUpdateCounter = 0;
   }
   else {
@@ -218,13 +246,6 @@ void updateDrivePID(float dtheta) {
   //Now, calculate the left and right wheel powers
   float leftPower = 0, rightPower = 0;
   arcadeDrive(output, driveSpeed, &leftPower, &rightPower);
-
-  //Set motor directions based on sign
-  //if output is positive, it means we need to turn more clockwise,
-  //so left motor forward and right motor backward. Vice versa for
-  //counterclockwise
-  setLeftMotorDirection((leftPower > 0) ? 1 : -1);
-  setRightMotorDirection((rightPower > 0) ? 1 : -1);
 
   //Set the wheel powers, and scale and constrain them to the right range
   float leftAnalog = constrain(floatMap(fabs(leftPower), 0, 1, 0, 255), 0, 255);
@@ -250,8 +271,10 @@ void updateTurnPID(float dtheta) {
   float leftAnalog = constrain(floatMap(fabs(output), 0, 1, 0, 255), 0, 255);
   float rightAnalog = constrain(floatMap(fabs(output), 0, 1, 0, 255), 0, 255);
 
+  Serial.println(leftAnalog);
+
   //if the same two values are being assigned over and over, then the robot doesnt need to turn anymore
-  if (leftAnalog == prevVal && leftAnalog < STOP_THRESHOLD) {
+  if (leftAnalog == prevVal && leftAnalog < ANALOG_STOP_THRESHOLD) {
     zeroCount++;
   }
   else {
@@ -260,6 +283,7 @@ void updateTurnPID(float dtheta) {
   }
 
   if (zeroCount > 5) {
+    digitalWrite(13, HIGH);
     brake();
     zeroCount = 0;
   }
@@ -277,6 +301,7 @@ void TCC0_Handler() {
 
     float x = 0, y = 0, z = 0;
     getOrientation(&x, &y, &z);
+    currentYaw = x;
     updatePID(x);
   }
 }

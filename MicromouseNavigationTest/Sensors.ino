@@ -57,9 +57,9 @@ uint32_t getLeftEncoder() {
   uint32_t ticks = 0;
   for(int i=0; i<32; i++) {
     digitalWrite(LEFT_ENCODER_CLK, HIGH);
-    delayMicroseconds(100);
+    delayMicroseconds(65);
     digitalWrite(LEFT_ENCODER_CLK, LOW);
-    delayMicroseconds(100);
+    delayMicroseconds(65);
     if(digitalRead(LEFT_ENCODER_MISO)) {
       ticks |= (1 << i);
     }
@@ -71,9 +71,9 @@ uint32_t getRightEncoder() {
   uint32_t ticks = 0;
   for(int i=0; i<32; i++) {
     digitalWrite(RIGHT_ENCODER_CLK, HIGH);
-    delayMicroseconds(100);
+    delayMicroseconds(65);
     digitalWrite(RIGHT_ENCODER_CLK, LOW);
-    delayMicroseconds(100);
+    delayMicroseconds(65);
     if(digitalRead(RIGHT_ENCODER_MISO)) {
       ticks |= (1 << i);
     }
