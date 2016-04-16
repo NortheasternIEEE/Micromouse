@@ -41,21 +41,41 @@ void moveRobot(location *p, direction d) {
             // MOVE THE MOUSE RIGHT
             // UPDATE ITS POSITION
             p->x = p->x + 1;
+            budge();
+            turnAbsolute(90);
+            setLeftMotorDirection(FORWARD);
+            setRightMotorDirection(FORWARD);
+            driveDistance(15.25, 0.565); //0.575 was changed -Charlie
             break;
         case LEFT:
             // MOVE THE MOUSE LEFT
             // UPDATE ITS POSITION
             p->x = p->x - 1;
+            budge();
+            turnAbsolute(270);
+            setLeftMotorDirection(FORWARD);
+            setRightMotorDirection(FORWARD);
+            driveDistance(15.25, 0.565); //0.575 was changed -Charlie
             break;
         case DOWN:
             // MOVE THE MOUSE DOWN
             // UPDATE ITS POSITION
             p->y = p->y - 1;
+            budge();
+            turnAbsolute(180);
+            setLeftMotorDirection(FORWARD);
+            setRightMotorDirection(FORWARD);
+            driveDistance(15.25, 0.565); //0.575 was changed -Charlie
             break;
         case UP:
             // MOVE THE MOUSE UP
             // UPDATE ITS POSITION
             p->y = p->y + 1;
+            budge();
+            turnAbsolute(0);
+            setLeftMotorDirection(FORWARD);
+            setRightMotorDirection(FORWARD);
+            driveDistance(15.25, 0.565); //0.575 was changed -Charlie
             break;
         case STOP:
             // DO NOTHING

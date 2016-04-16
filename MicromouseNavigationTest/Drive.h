@@ -66,6 +66,10 @@ void turn(float);
 void turnAbsolute(float);
 uint8_t isTurning(void);
 
+float getTargetAngle(void);
+
+void budge(void);
+
 //Drive the robot at a given speed indefinitely
 void drive(float);
 

@@ -27,7 +27,7 @@ void map(location *position, node param[mazeSize][mazeSize]) {
          // Move the mouse that direction and update its location
          if (canMove(position, options[i], param)) {
                 Serial.println("We can move here");
-    //         moveRobot(position, options[i]);
+             moveRobot(position, options[i]);
     //         printf("Moved to: ");
     //         printf("X = %d, Y = %d\n",position->x, position->y);
     //         // Map the maze starting from that new location

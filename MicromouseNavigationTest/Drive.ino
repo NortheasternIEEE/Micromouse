@@ -135,6 +135,10 @@ uint8_t isTurning() {
   return turning;
 }
 
+float getTargetAngle() {
+  return targetAngle;
+}
+
 void drive(float newSpeed) {
   //clear variables from previous driving
   distanceUpdateCounter = 0;
@@ -181,6 +185,22 @@ void driveDistance(float distance, float newSpeed) {
 
   //now, check for the case where the encoders stopped us before we got close enough to the wall
   
+}
+
+void budge() {
+  delay(100);
+  uint8_t doAnExtraBudge = 0;
+  while(getFrontDistance() > BUDGE_STOP_THRESHOLD) {
+    setLeftMotorDirection(FORWARD);
+    setRightMotorDirection(FORWARD);
+    driveDistance(0.75, 0.575);
+    doAnExtraBudge = 1;
+  }
+  if(doAnExtraBudge) {
+    setLeftMotorDirection(FORWARD);
+    setRightMotorDirection(FORWARD);
+    driveDistance(1, 0.575);
+  }
 }
 
 void driveCorrect() {
